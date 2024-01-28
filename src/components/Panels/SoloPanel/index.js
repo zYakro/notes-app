@@ -1,6 +1,7 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { BordersContainer, Container, Content, Dot, Line, PanelShadow, TitleContainer, TypedTitle } from './styled'
+import { SectionSeparator } from '../../Separators/SectionSeparator'
 
 export const SoloPanel = ({ children, title = null }) => {
   return (
@@ -17,19 +18,11 @@ export const SoloPanel = ({ children, title = null }) => {
             />
           </TitleContainer>
         }
-        <BordersContainer>
-          <Dot />
-          <Line />
-          <Dot />
-        </BordersContainer>
+        <SectionSeparator />
         <Content>
           {children}
         </Content>
-        <BordersContainer>
-          <Dot />
-          <Line />
-          <Dot />
-        </BordersContainer>
+        <SectionSeparator />
       </Container>
     </PanelShadow>
   )

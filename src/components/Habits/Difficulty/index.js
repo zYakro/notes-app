@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { List, Container, Title } from './styled'
-import { useTheme } from 'styled-components';
 import { DifficultyItem } from './DifficultyItem';
 
-export const Difficulty = ({ startingDifficulty = '', onChangeDifficulty }) => {
+export const Difficulty = ({ startingDifficulty = 'easy', onChangeDifficulty }) => {
   const [focusedDifficulty, setFocusedDifficulty] = useState(startingDifficulty)
 
   const changeDifficulty = (difficulty) => {

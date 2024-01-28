@@ -1,7 +1,10 @@
 import React from 'react'
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import { Tabs } from './Tabs';
-import { StatusBar } from '../components/StatusBar';
+import { MainNavigation } from './MainNavigation';
+import { AuthView } from '../views/AuthView'
+import { createStackNavigator } from '@react-navigation/stack';
+
+const Stack = createStackNavigator()
 
 export const Navigation = () => {
 
@@ -13,11 +16,15 @@ export const Navigation = () => {
     }
   }
 
+
+
   return (
     <>
-      <StatusBar />
       <NavigationContainer theme={theme} >
-        <Tabs />
+        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Auth'>
+          <Stack.Screen name="Main" component={MainNavigation} />
+          <Stack.Screen name="Auth" component={AuthView} />
+        </Stack.Navigator>
       </NavigationContainer>
     </>
   )

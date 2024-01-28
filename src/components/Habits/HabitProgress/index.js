@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { HabitProgressContainer, HabitProgressScroll, ProgressNumber } from './styled'
 import { HabitProgressRect } from './HabitProgressRect';
-import { Text } from 'react-native';
 
 export const HabitProgress = ({ progress }) => {
   const scroll = useRef()

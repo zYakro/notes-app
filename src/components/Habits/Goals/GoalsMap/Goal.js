@@ -18,15 +18,23 @@ const GoalInfo = ({ name }) => {
   )
 }
 
-export const Goal = ({ onPress, onLongPress, item, isFocused }) => {
+export const Goal = ({ onPress, onLongPress, goal, isFocused }) => {
   const theme = useTheme()
 
-  const iconColor = (item.isCompleted || isFocused) ? theme.text.color : theme.disabledColor
+  const iconColor = (goal.isCompleted || isFocused) ? theme.text.color : theme.disabledColor
 
-  const currentIcon = icons[item.icon]({ size: 12, color: iconColor })
+  const currentIcon = icons[goal.icon]({ size: 12, color: iconColor })
+
+  const getDate = () => {
+    return goal.completedAt.toLocaleString(undefined, {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    }) 
+  }
 
   return (
-    <TouchableContainer onPress={() => onPress(item)} onLongPress={() => onLongPress(item)}>
+    <TouchableContainer onPress={() => onPress(goal)} onLongPress={() => onLongPress(goal)}>
       <Content>
         <IconContainer>
           <IconBorder color={iconColor}>
@@ -34,10 +42,10 @@ export const Goal = ({ onPress, onLongPress, item, isFocused }) => {
           </IconBorder>
           {
             isFocused &&
-            <GoalInfo name={"01/05/24"} />
+            <GoalInfo name={getDate()} />
           }
         </IconContainer>
-        <Line isCompleted={item.isCompleted} />
+        <Line isCompleted={goal.isCompleted} />
       </Content>
     </TouchableContainer>
   )

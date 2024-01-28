@@ -4,21 +4,21 @@ import { GoalPanel } from '../GoalPanel'
 import { Goal } from './Goal'
 import { GoalsContainer, StyledFlatList } from './styled.js'
 
-export const GoalsMap = ({ goals, focusedItem, onPress, onLongPress }) => {
+export const GoalsMap = ({ goals, focusedItemIndex, openEditor, changeFocusedItem }) => {
   return (
     <GoalPanel title={"▣ Map"}>
       <GoalsContainer>
         <StyledFlatList
           data={goals}
-          renderItem={({ item }) =>
+          renderItem={({ item, index }) =>
             <Goal 
-              isFocused={(focusedItem.id == item.id)}
-              onPress={onPress}
-              onLongPress={onLongPress}
-              item={item}
+              isFocused={(focusedItemIndex == index)}
+              onPress={() => changeFocusedItem(index)}
+              onLongPress={() => openEditor(index)}
+              goal={item}
             />
           }
-          keyExtractor={item => item.id}
+          keyExtractor={(_, index) => index}
         />
       </GoalsContainer>
     </GoalPanel>

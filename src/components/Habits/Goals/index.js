@@ -1,91 +1,69 @@
-import { View, Text } from 'react-native'
 import React, { useState } from 'react'
 import { GoalsContainer } from './styled'
 import { GoalsList } from './GoalsList'
 import { GoalsMap } from './GoalsMap'
-import { GoalInfo } from './GoalInfo'
-import { AreYouSurePanel } from '../../Panels/AreYouSurePanel'
+import { GoalEditor } from './GoalEditor'
 import { CreateGoal } from './CreateGoal'
+import { useGoals } from '../../../hooks/useGoals/useGoals'
 
-export const Goals = () => {
-  const [focusedItem, setFocusedItem] = useState({})
-  const [isModalVisible, setIsModalVisible] = useState(false)
-  const [showCreateGoal, setShowCreateGoal] = useState(false)
+export const Goals = ({ goals, setGoals }) => {
+  const {
+    currentIndex,
+    setCurrentIndex,
+    createGoal,
+    editGoal,
+    deleteGoal
+  } = useGoals(goals, setGoals)
 
-  const info = [
-    {
-      id: 0,
-      name: 'adsasdasddsadas',
-      description: 'adss',
-      isCompleted: true,
-      icon: 'flag'
-    },
-    {
-      id: 1,
-      name: 'ads',
-      description: 'adss',
-      isCompleted: false,
-      icon: 'barbell'
-    },
-    {
-      id: 2,
-      name: 'ads',
-      description: 'adss',
-      isCompleted: false,
-      icon: 'book'
-    },
-    {
-      id: 3,
-      name: 'ads',
-      description: 'adss',
-      isCompleted: false,
-      icon: 'dog'
-    },
-    {
-      id: 4,
-      name: 'ads',
-      description: 'adss',
-      isCompleted: false,
-      icon: 'flag'
-    }
-  ]
+  const [isEditorVisible, setIsEditorVisible] = useState(false)
+  const [isCreateGoalVisible, setIsCreateGoalVisible] = useState(false)
 
-  const changeFocusItem = (item) => {
-    setFocusedItem(item)
+  const closeEditor = () => {
+    setIsEditorVisible(false)
   }
 
-  const closeModal = () => {
-    setIsModalVisible(false)
+  const openEditor = (index) => {
+    setCurrentIndex(index)
+    setIsEditorVisible(true)
   }
 
-  const setModalVisible = (item) => {
-    setFocusedItem(item)
-    setIsModalVisible(true)
+  const closeCreateGoal = () => {
+    setIsCreateGoalVisible(false)
   }
 
-  const closeCreateGoalModal = () => {
-    setShowCreateGoal(false)
-  }
-
-  const showCreateGoalModal = () =>{
-    setShowCreateGoal(true)
+  const openCreateGoal = () =>{
+    setIsCreateGoalVisible(true)
   }
 
   return (
     <GoalsContainer>
       <GoalsList
-        goals={info}
-        onPress={changeFocusItem}
-        onLongPress={setModalVisible}
-        onCreateModal={showCreateGoalModal}
-        focusedItem={focusedItem} />
+        goals={goals}
+        changeFocusedItem={setCurrentIndex}
+        openEditor={openEditor}
+        onCreateModal={openCreateGoal}
+        focusedItemIndex={currentIndex} />
       <GoalsMap
-        goals={info}
-        onPress={changeFocusItem}
-        onLongPress={setModalVisible}
-        focusedItem={focusedItem} />
-      <GoalInfo info={focusedItem} closeModal={closeModal} isVisible={isModalVisible}/>
-      <CreateGoal closeModal={closeCreateGoalModal} isVisible={showCreateGoal}/>
+        goals={goals}
+        changeFocusedItem={setCurrentIndex}
+        openEditor={openEditor}
+        focusedItemIndex={currentIndex} />
+      { 
+        isEditorVisible &&
+        <GoalEditor
+          goal={goals[currentIndex]} 
+          closeModal={closeEditor} 
+          deleteGoal={deleteGoal}
+          editGoal={editGoal}
+        />
+      }
+      { 
+        isCreateGoalVisible && 
+        <CreateGoal
+          closeModal={closeCreateGoal} 
+          createGoal={createGoal}
+        />
+      }
     </GoalsContainer>
   )
 }

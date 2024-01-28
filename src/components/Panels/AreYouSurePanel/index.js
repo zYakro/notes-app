@@ -20,8 +20,8 @@ export const AreYouSurePanel = ({ visible, panelTitle, text, onYes, onNo, onClos
           {text}
         </PanelText>
         <SubmitButtons>
-          <BasicSubmitButton title='Yes' onPress={onYes} />
           <BasicSubmitButton title='No' onPress={onNo} />
+          <BasicSubmitButton title='Yes' onPress={onYes} />
         </SubmitButtons>
       </Content>    
     </PopupPanel>

@@ -4,19 +4,14 @@ import { usePanelSizeAnimation } from '../../../hooks/Animations/usePanelSizeAni
 import { animatedPanel } from '../../../constant/animationSettings/animatedPanel';
 
 export const AnimatedPanel = ({ isTabOpen = true, delay = 0,children }) => {
-  const [width, height] = usePanelSizeAnimation({
+  const animatedStyle = usePanelSizeAnimation({
     ...animatedPanel.panelSizeAnim,
     isTabOpen: isTabOpen,
     delay: delay
   })
 
   return (
-    <Animated.View
-      style={{
-        width: width,
-        height: height,
-      }}
-    >
+    <Animated.View style={animatedStyle} >
       {children}
     </Animated.View>
   );

@@ -2,25 +2,25 @@ import React from 'react'
 import { GoalListContainer, GoalsFlatlist } from './styled'
 import { Goal } from './Goal'
 import { GoalPanel } from '../GoalPanel'
-import { AddGoalIcon } from './AddGoalIcon'
+import { AddFAB } from '../../../Panels/AddFAB'
 
-export const GoalsList = ({ goals, onPress, onLongPress, focusedItem, onCreateModal }) => {
+export const GoalsList = ({ goals, changeFocusedItem, openEditor, focusedItemIndex, onCreateModal }) => {
   return (
     <GoalPanel title={"▣ Goals"}>
       <GoalListContainer>
         <GoalsFlatlist
           data={goals}
-          renderItem={({ item }) =>
+          renderItem={({ item, index }) =>
             <Goal
               item={item}
-              onPress={onPress}
-              onLongPress={onLongPress}
-              isFocused={(focusedItem.id === item.id)}
+              onPress={() => changeFocusedItem(index)}
+              onLongPress={() => openEditor(index)}
+              isFocused={(focusedItemIndex === index)}
             />
           }
-          keyExtractor={item => item.id}
+          keyExtractor={(_, index) => index}
         />
-        <AddGoalIcon onPress={onCreateModal} />
+        <AddFAB onPress={onCreateModal} iconSize={25}/>
       </GoalListContainer>
     </GoalPanel>
   )

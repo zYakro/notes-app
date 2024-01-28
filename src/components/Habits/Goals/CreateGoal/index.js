@@ -1,23 +1,24 @@
 import React, { useState } from 'react'
-import { Content, ImageContainer } from './styled'
-import { Form } from './Form'
+import { Content } from './styled'
 import { PopupPanel } from '../../../Panels/PopupPanel'
 import { IconImage } from './IconImage'
+import { GoalForm } from './GoalForm';
 
-export const CreateGoal = ({ isVisible, closeModal}) => {
+export const CreateGoal = ({ createGoal, closeModal }) => {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [icon, setIcon] = useState('flag')
 
   const onCreateGoal = () => {
-    closeModal()  
+    createGoal(name, description, icon) 
+    closeModal()
   }
 
   return (
     <PopupPanel
       title={"▣ Create a goal"}
       onCloseModal={closeModal}
-      visible={isVisible}
+      visible={true}
       style={{
         width: '100%',
         maxWidth: 450,
@@ -27,14 +28,14 @@ export const CreateGoal = ({ isVisible, closeModal}) => {
     >
       <Content>
         <IconImage icon={icon} />
-        <Form
+        <GoalForm 
           name={name}
           setName={setName}
           description={description}
           setDescription={setDescription}
           setIcon={setIcon}
-          buttonText={'Create Goal'}
           onSubmit={onCreateGoal}
+          buttonText={"Create goal"}
         />
       </Content>
     </PopupPanel>

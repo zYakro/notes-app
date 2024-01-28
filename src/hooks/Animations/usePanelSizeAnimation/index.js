@@ -1,35 +1,54 @@
-import { useState } from 'react';
-import { useExpandAnimation, useDeExpandAnimation } from '../useExpandAnimation';
+import { useEffect } from 'react';
+import { Easing, useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 
 export const usePanelSizeAnimation = ({ duration, openDelays, closeDelays, isTabOpen, delay = 0 }) => {
-  const expandedSize = {
-    width: useExpandAnimation({
-      duration: duration,
-      delay: openDelays.width + delay,
-      start: isTabOpen
-    }),
-    height: useExpandAnimation({
-      duration: duration,
-      delay: openDelays.height + delay,
-      start: isTabOpen
-    }),
-  };
+  const width = useSharedValue('0%')
+  const height = useSharedValue('0%')
 
-  const collapsedSize = {
-    width: useDeExpandAnimation({
-      duration: duration,
-      delay: closeDelays.width,
-      start: !isTabOpen
-    }),
-    height: useDeExpandAnimation({
-      duration: duration,
-      delay: closeDelays.height,
-      start: !isTabOpen
-    }),
-  };
+  useEffect(() => {
+    if (isTabOpen) {
+      width.value = withDelay(
+        openDelays.width + delay,
+        withTiming('100%', {
+          duration: duration,
+          easing: Easing.linear
+        })
+      )
 
-  const getWidth = () => (isTabOpen) ? expandedSize.width : collapsedSize.width;
-  const getHeight = () => (isTabOpen) ? expandedSize.height : collapsedSize.height;
+      height.value = withDelay(
+        openDelays.height + delay,
+        withTiming('100%', {
+          duration: duration,
+          easing: Easing.linear
+        })
+      )
+      return;
+    }
 
-  return [getWidth(), getHeight()]
+    width.value = withDelay(
+      closeDelays.width + delay,
+      withTiming('0%', {
+        duration: duration,
+        easing: Easing.linear
+      })
+    )
+
+    height.value = withDelay(
+      closeDelays.height + delay,
+      withTiming('0%', {
+        duration: duration,
+        easing: Easing.linear
+      })
+    )
+
+  }, [isTabOpen])
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      width: width.value,
+      height: height.value
+    }
+  })
+
+  return animatedStyle
 }

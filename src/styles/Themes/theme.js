@@ -45,7 +45,12 @@ export const theme = {
   disabledColor: '#969580',
   panelLines: '#AFAA96',
   lightDisabledColor: '#AFAA96',
+  disabledColorBackground: '#AFAA9688',
   backgroundColor: '#d0ccb3',
+  error: {
+    backgroundColor: '#ee525366',
+    color: '#ee5253'
+  },
   onBackgroundColor: '#4C4940',
   touchableOpacity: 0.7,
 }

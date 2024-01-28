@@ -7,7 +7,7 @@ export const GoalListContainer = styled.View`
   display: flex; 
   align-items: flex-start;
   justify-content: flex-start;
-  width: 100%;
+  min-width: 100%;
   height: 100%;
   flex: 1;
   padding: 0 5px;

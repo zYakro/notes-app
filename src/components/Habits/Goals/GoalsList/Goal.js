@@ -26,7 +26,7 @@ export const Goal = ({ isFocused, onPress, item, onLongPress }) => {
   }, [isFocused])
 
   return (
-    <ButtonContainer onPress={() => onPress(item)} onLongPress={() => onLongPress(item)} isFocused={isFocused} >
+    <ButtonContainer onPress={onPress} onLongPress={onLongPress} isFocused={isFocused} >
       <AnimatedViewContainer
         style={transitionStyle}
       >

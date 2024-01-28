@@ -1,5 +1,6 @@
 import { Pressable } from "react-native";
 import styled from "styled-components";
+import Animated from "react-native-reanimated"
 
 export const Container = styled.View`
   display: flex;
@@ -26,29 +27,49 @@ export const List = styled.View`
   gap: 15px;
 `
 
+export const DifficulyItemTitle = styled.Text`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: ${({ theme }) => theme.text.color};
+  font-size: 14px;
+  font-weight: bold;
+`
+
 export const ItemContainer = styled(Pressable)`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 72px;
   height: 100%;
-  padding: 1px 2px;
-  border-bottom-width: ${({ isFocused }) => isFocused ? "2px" : "0"};
-  border-color: ${({ theme }) => theme.onBackgroundColor};
+  padding: 2px 2px;
 `
 
-export const IconContainer = styled.View`
+export const IconBorder = styled.View`
+  background-color: transparent;
+  border-top-width: 2px;
+  border-bottom-width: 2px;
+  border-color: ${({ theme }) => theme.onBackgroundColor};
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 0;
+`
+
+export const IconContainer = styled(Animated.View)`
   display: flex;
   align-items: center;
   justify-content: center;
   flex: 1;
   height: 100%;
   width: 100%;
-  background-color: ${({ theme }) => theme.onBackgroundColor};
-  border-radius: 5px;
 `
 
-export const DifficulyItemTitle = styled.Text`
+export const ItemTitle = styled.Text`
   display: flex;
   align-items: center;
   justify-content: center;

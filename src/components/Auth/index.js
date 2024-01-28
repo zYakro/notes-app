@@ -1,14 +1,16 @@
-import { View, Text } from 'react-native'
-import React, { useState } from 'react'
-import { AuthPanel } from './AuthPanel'
+import React, { useEffect, useState } from 'react'
 import { Container } from './styled'
 import { SignIn } from './SignIn'
 import { SignUp } from './SignUp'
 import { animatedPanel } from '../../constant/animationSettings/animatedPanel'
+import { isUserAuthenticated } from '../../services/auth.service'
+import { useNavigation } from '@react-navigation/native'
 
 export const Auth = () => {
-  const [isPanelActive, setIsPanelActive] = useState(false)
-  const [displayPanel, setDisplayPanel] = useState(false)
+  const navigation = useNavigation()
+  
+  const [isPanelActive, setIsPanelActive] = useState(true)
+  const [displayPanel, setDisplayPanel] = useState(true)
 
   const changePanel = () => {
     setIsPanelActive(isActive => !isActive)
@@ -17,6 +19,14 @@ export const Auth = () => {
       setDisplayPanel(isActive => !isActive)
     }, animatedPanel.close)
   }
+
+  useEffect(() => {
+    isUserAuthenticated(async user => {
+      if(user){
+        navigation.navigate('Main') 
+      }
+    })
+  }, [])
 
   return (
     <Container>

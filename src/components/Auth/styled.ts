@@ -1,8 +1,9 @@
 import { TouchableOpacity } from "react-native-gesture-handler";
 import styled from "styled-components";
 import { TypingText } from "../TypingText";
+import { View, Text } from "react-native";
 
-export const Container = styled.View`
+export const Container = styled(View)`
   width: 100%;
   height: 100%;
   display: flex;
@@ -10,7 +11,7 @@ export const Container = styled.View`
   justify-content: center;
 `
 
-export const ClickableTextStyle = styled.Text`
+export const ClickableTextStyle = styled(Text)`
   width: 100%;
   text-align: center;
   height: auto;
@@ -29,7 +30,7 @@ export const ClickableTextContainer = styled(TouchableOpacity).attrs(({ theme })
   padding: 10px;
 `
 
-export const AuthPanelContainer = styled.View`
+export const AuthPanelContainer = styled(View)`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -41,7 +42,7 @@ export const AuthPanelContainer = styled.View`
   max-height: 450px;
 `
 
-export const ContentContainer = styled.View`
+export const ContentContainer = styled(View)`
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -51,7 +52,7 @@ export const ContentContainer = styled.View`
   padding: 15px 15px;
 `
 
-export const ErrorTextContainer = styled.View`
+export const ErrorTextContainer = styled(View)`
   width: 100%;
   height: auto;
   display: flex;
@@ -68,7 +69,7 @@ export const ErrorTypingText = styled(TypingText)`
   font-weight: bold;
 `
 
-export const ErrorTag = styled.Text`
+export const ErrorTag = styled(Text)`
   background-color: ${({ theme }) => theme.error.color};
   color: ${({ theme }) => theme.backgroundColor};
   padding: 0px 2px;
@@ -76,4 +77,13 @@ export const ErrorTag = styled.Text`
   text-align: center;
   font-weight: bold;
   font-size: 12px;
+`
+
+export const ViewContainer = styled(View)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
 `

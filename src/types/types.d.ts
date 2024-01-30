@@ -1,7 +1,7 @@
 import { icons } from "@/utils/goals/icons"
 import { DocumentData, DocumentSnapshot, Timestamp } from "firebase/firestore"
 
-export type Routes = MainRoutes & HabitRoutes & JournalRoutes
+export type Routes = MainRoutes & HabitRoutes & JournalRoutes & AuthRoutes
 
 export type MainRoutes = {
   Auth
@@ -18,6 +18,11 @@ export type JournalRoutes = {
   Entries,
   CreateEntry,
   EditEntry
+}
+
+export type AuthRoutes = {
+  SignIn,
+  SignUp
 }
 
 export type IBatteryProviderReturn = {

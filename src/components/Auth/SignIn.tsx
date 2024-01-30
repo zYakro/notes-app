@@ -8,13 +8,9 @@ import { useNavigation } from '@react-navigation/native'
 import { ErrorMessage } from './ErrorMessage'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { Routes } from '@/types/types'
+import { ViewContainer } from './styled'
 
-interface SignInProps {
-  changePanel: () => void,
-  isPanelActive: boolean
-}
-
-export const SignIn = ({ changePanel, isPanelActive }: SignInProps) => {
+export const SignIn = () => {
   const navigation = useNavigation<StackNavigationProp<Routes>>()
 
   const [email, setEmail] = useState('')
@@ -27,18 +23,19 @@ export const SignIn = ({ changePanel, isPanelActive }: SignInProps) => {
   const signInOnSubmit = async () => {
     const res = await singIn(email, password)
 
-    if(!res.success){
+    if (!res.success) {
       return setError(res)
     }
-  
+
     navigation.navigate('Main')
   }
 
+  const navigateToSignUp = () => {
+    navigation.navigate('SignUp')
+  }
+
   return (
-    <AuthPanel
-      title={"▣ Sign In"}
-      isTabOpen={isPanelActive}
-    >
+    <AuthPanel title={"▣ Sign In"} >
       <BasicTextInputForm
         text={email}
         onChangeText={setEmail}
@@ -60,7 +57,7 @@ export const SignIn = ({ changePanel, isPanelActive }: SignInProps) => {
         title={"Sign in"}
         onPress={signInOnSubmit}
       />
-      <ClickableText onPress={changePanel}>
+      <ClickableText onPress={navigateToSignUp}>
         You don't have an account? Register!
       </ClickableText>
     </AuthPanel>

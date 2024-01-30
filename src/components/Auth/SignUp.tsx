@@ -5,13 +5,13 @@ import { ClickableText } from './ClickableText'
 import { BasicTextInputForm } from '../Inputs/BasicTextInputForm'
 import { signUp } from '../../services/auth.service'
 import { ErrorMessage } from './ErrorMessage'
+import { useNavigation } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
+import { Routes } from '@/types/types'
 
-interface SignUpProps {
-  changePanel: () => void,
-  isPanelActive: boolean
-}
+export const SignUp = () => {
+  const navigation = useNavigation<StackNavigationProp<Routes>>()
 
-export const SignUp = ({ changePanel, isPanelActive }: SignUpProps) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmation, setConfirmation] = useState('')
@@ -27,14 +27,15 @@ export const SignUp = ({ changePanel, isPanelActive }: SignUpProps) => {
       return setError(res)
     }
 
-    changePanel()
+    navigation.navigate('SignIn')
+  }
+
+  const navigateToSignIn = () => {
+    navigation.navigate('SignIn')
   }
 
   return (
-    <AuthPanel
-      title={"▣ Sign Up"}
-      isTabOpen={isPanelActive}
-    >
+    <AuthPanel title={"▣ Sign Up"}>
       <BasicTextInputForm
         text={email}
         onChangeText={setEmail}
@@ -63,7 +64,7 @@ export const SignUp = ({ changePanel, isPanelActive }: SignUpProps) => {
         title={"Sign up"}
         onPress={signUpOnSubmit}
       />
-      <ClickableText onPress={changePanel}>
+      <ClickableText onPress={navigateToSignIn}>
         You already have an account? Sign in!
       </ClickableText>
     </AuthPanel>

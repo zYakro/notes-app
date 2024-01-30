@@ -11,6 +11,6 @@
   "include": [
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "metro.config.js"  ],
   "strict": true
 }

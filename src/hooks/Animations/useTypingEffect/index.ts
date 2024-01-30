@@ -48,5 +48,13 @@ export const useTypingEffect = ({ textToType, duration = 10000, delay = 0, veloc
 		}
 	}, [])
 
+	useEffect(() => {
+		const interval = applyDelay(updateCurrentTextData, delay)
+
+		return () => {
+			clearInterval(interval)
+		}
+	}, [textToType])
+
 	return [currentText, hasFinished]
 }

@@ -28,6 +28,6 @@ TODO:
 - [X] Fix goals UI error on empty 
 - [ ] Put are you sure panel when changing screen when not saved changes
 - [ ] Handle errors in Journal and Habits
-- [ ] Migrate to Typescript
+- [X] Migrate to Typescript
 - [ ] Migrate to Suprabase
 - [ ] Create the shop view

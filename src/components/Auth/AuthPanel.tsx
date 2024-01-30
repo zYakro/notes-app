@@ -1,0 +1,26 @@
+import React from 'react'
+import { AuthPanelContainer, ContentContainer } from './styled'
+import { AnimatedPanel } from '../Panels/AnimatedPanel'
+import { BasicPanel } from '../Panels/BasicPanel'
+
+interface AuthPanelProps {
+  title: string
+  isTabOpen: boolean
+  children: React.ReactNode
+}
+
+export const AuthPanel = ({ title, children, isTabOpen }: AuthPanelProps) => {
+  return (
+    <AuthPanelContainer>
+      <AnimatedPanel isTabOpen={isTabOpen}>
+        <BasicPanel
+          title={title}
+        >
+          <ContentContainer>
+            {children}
+          </ContentContainer>
+        </BasicPanel>
+      </AnimatedPanel>
+    </AuthPanelContainer>
+  )
+}

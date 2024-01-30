@@ -1,6 +1,6 @@
 import { AuthPanel } from './AuthPanel'
 import { BasicTextInputForm } from '../Inputs/BasicTextInputForm'
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { BasicSubmitButton } from '../Inputs/BasicSubmitButton'
 import { ClickableText } from './ClickableText'
 import { singIn } from '../../services/auth.service'
@@ -9,25 +9,34 @@ import { ErrorMessage } from './ErrorMessage'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { Routes } from '@/types/types'
 import { ViewContainer } from './styled'
+import { DatabaseError, ValidationError } from '@/services/errors.service'
+import { AlertsContext } from '@/context/Alerts/AlertsContext'
 
 export const SignIn = () => {
+  const { setAlert } = useContext(AlertsContext)
+
   const navigation = useNavigation<StackNavigationProp<Routes>>()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState({
-    success: true,
-    message: ''
-  })
+  const [error, setError] = useState('')
 
   const signInOnSubmit = async () => {
-    const res = await singIn(email, password)
-
-    if (!res.success) {
-      return setError(res)
+    try {
+      await singIn(email, password)
     }
+    catch (err) {
+      if (err instanceof ValidationError) {
+        return setError(err.message)
+      }
 
-    navigation.navigate('Main')
+      if (err instanceof DatabaseError) {
+        setAlert({
+          title: 'Database error',
+          message: err.message
+        })
+      }
+    }
   }
 
   const navigateToSignUp = () => {
@@ -50,8 +59,8 @@ export const SignIn = () => {
         securityTextEntry={true}
       />
       {
-        !error.success &&
-        <ErrorMessage text={error.message} />
+        error &&
+        <ErrorMessage text={error} />
       }
       <BasicSubmitButton
         title={"Sign in"}

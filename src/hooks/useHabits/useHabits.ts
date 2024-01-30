@@ -1,5 +1,5 @@
-import { useState } from "react"
-import { 
+import { useContext, useState } from "react"
+import {
   getHabitList as getHabitsFromFirestore,
   getHabitInfo as getHabitInfoFromFirestore,
   updateHabit as updateHabitFromFirestore,
@@ -8,6 +8,7 @@ import {
 } from "../../services/habits.service"
 import { getCurrentServerDate } from "../../utils/firebase/getCurrentServerDate"
 import { HabitDifficulty, IGoals, IHabitInfo, IHabitList } from "@/types/types"
+import { AlertsContext } from "@/context/Alerts/AlertsContext"
 
 type ICreateHabit = {
   name: string
@@ -15,80 +16,117 @@ type ICreateHabit = {
   difficulty: HabitDifficulty
   goals: IGoals
   progress: number
-  createdAt: Date 
+  createdAt: Date
 }
 
 export const useHabits = () => {
+  const { setAlert } = useContext(AlertsContext)
+
   const [habitList, setHabitList] = useState<IHabitList>([])
   const [currentHabitInfo, setCurrentHabitInfo] = useState<IHabitInfo>()
-  
-  const getHabitList = async () => {
-    const habits = await getHabitsFromFirestore() 
 
-    setHabitList(habits)
+  const getHabitList = async () => {
+    try {
+      const habits = await getHabitsFromFirestore()
+
+      setHabitList(habits)
+    } catch (err) {
+      setAlert({
+        title: 'Database error',
+        message: err.message
+      })
+    }
   }
 
   const getHabitInfo = async (id: string) => {
-    const habitInfo = await getHabitInfoFromFirestore(id) 
+    try {
+      const habitInfo = await getHabitInfoFromFirestore(id)
 
-    setCurrentHabitInfo(habitInfo)
-  }
-
-  const updateHabit = async ({ name, motivation, progress, createdAt, difficulty, goals}: IHabitInfo) => {
-    await updateHabitFromFirestore({
-      id: currentHabitInfo.id,
-      name,
-      motivation,
-      progress,
-      createdAt,
-      difficulty,
-      goals
-    })
-
-    setHabitList(habitList.map(item => {
-      if(item.id === currentHabitInfo.id){
-        return {
-          id: item.id,
-          name, 
-          progress,
-          createdAt
-        }
-      }
-      return item;
-    }))
-  }
-
-  const createHabit = async ({ name, motivation, progress, difficulty, goals}: ICreateHabit) => {
-    const habit = {
-      name,
-      motivation,
-      progress,
-      difficulty,
-      goals,
-      completedAt: getCurrentServerDate(),
-      createdAt: getCurrentServerDate()
+      setCurrentHabitInfo(habitInfo)
+    } catch (err) {
+      setAlert({
+        title: 'Database error',
+        message: err.message
+      })
     }
+  }
 
-    const id = await createHabitFromFirestore(habit)
+  const updateHabit = async ({ name, motivation, progress, createdAt, difficulty, goals }: IHabitInfo) => {
+    try {
+      await updateHabitFromFirestore({
+        id: currentHabitInfo.id,
+        name,
+        motivation,
+        progress,
+        createdAt,
+        difficulty,
+        goals
+      })
 
-    setHabitList([
-      ...habitList, 
-      {
-        id: id,
-        ...habit
+      setHabitList(habitList.map(item => {
+        if (item.id === currentHabitInfo.id) {
+          return {
+            id: item.id,
+            name,
+            progress,
+            createdAt
+          }
+        }
+        return item;
+      }))
+    } catch (err) {
+      setAlert({
+        title: 'Database error',
+        message: err.message
+      })
+    }
+  }
+
+  const createHabit = async ({ name, motivation, progress, difficulty, goals }: ICreateHabit) => {
+    try {
+      const habit = {
+        name,
+        motivation,
+        progress,
+        difficulty,
+        goals,
+        completedAt: getCurrentServerDate(),
+        createdAt: getCurrentServerDate()
       }
-    ])
+
+      const id = await createHabitFromFirestore(habit)
+
+      setHabitList([
+        ...habitList,
+        {
+          id: id,
+          ...habit
+        }
+      ])
+    } catch (err) {
+      setAlert({
+        title: 'Database error',
+        message: err.message
+      })
+    }
   }
 
   const deleteHabit = async () => {
-    await deleteHabitFromFirestore(currentHabitInfo.id)
+    try {
+      await deleteHabitFromFirestore(currentHabitInfo.id)
 
-    setHabitList(habitList.filter(habit => {
-      return habit.id !== currentHabitInfo.id
-    }))
+      setHabitList(habitList.filter(habit => {
+        return habit.id !== currentHabitInfo.id
+      }))
+    } catch (err) {
+      setAlert({
+        title: 'Database error',
+        message: err.message
+      })
+    }
   }
 
-  return{
+  return {
     habitList,
     currentHabitInfo,
     getHabitList,

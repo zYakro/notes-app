@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
   getJournalEntries,
   getJournalEntryInfo,
@@ -8,69 +8,106 @@ import {
 } from "../../services/journal.service"
 import { getCurrentServerDate } from '../../utils/firebase/getCurrentServerDate'
 import { IJournalEntriesList, IJournalEntryInfo } from '@/types/types'
+import { AlertsContext } from '@/context/Alerts/AlertsContext'
 
 export const useJournal = () => {
+  const { setAlert } = useContext(AlertsContext)
+
   const [entriesList, setEntriesList] = useState<IJournalEntriesList>([])
   const [currentEntryInfo, setCurrentEntryInfo] = useState<IJournalEntryInfo>()
 
   const getEntriesList = async () => {
-    const entries = await getJournalEntries()
+    try {
+      const entries = await getJournalEntries()
 
-    setEntriesList(entries)
+      setEntriesList(entries)
+    } catch (err) {
+      setAlert({
+        title: 'Database error',
+        message: err.message
+      })
+    }
   }
 
   const getEntryInfo = async (id: string) => {
+    try {
+      const info = await getJournalEntryInfo(id)
 
-    const info = await getJournalEntryInfo(id)
-
-    setCurrentEntryInfo(info)
+      setCurrentEntryInfo(info)
+    } catch (err) {
+      setAlert({
+        title: 'Database error',
+        message: err.message
+      })
+    }
   }
 
   const updateEntry = async ({ name, text }: { name: string, text: string }) => {
-    await updateJournalEntry({
-      id: currentEntryInfo.id,
-      name,
-      text,
-      createdAt: currentEntryInfo.createdAt,
-    })
+    try {
+      await updateJournalEntry({
+        id: currentEntryInfo.id,
+        name,
+        text,
+        createdAt: currentEntryInfo.createdAt,
+      })
 
-    setEntriesList(entriesList.map(item => {
-      if (item.id === currentEntryInfo.id) {
-        return {
-          id: item.id,
-          name,
-          text,
-          createdAt: currentEntryInfo.createdAt,
+      setEntriesList(entriesList.map(item => {
+        if (item.id === currentEntryInfo.id) {
+          return {
+            id: item.id,
+            name,
+            text,
+            createdAt: currentEntryInfo.createdAt,
+          }
         }
-      }
-      return item
-    }))
+        return item
+      }))
+    } catch (err) {
+      setAlert({
+        title: 'Database error',
+        message: err.message
+      })
+    }
   }
 
   const createEntry = async ({ name, text }: { name: string, text: string }) => {
-    const entry = {
-      name,
-      text,
-      createdAt: getCurrentServerDate()
-    }
-
-    const id = await createJournalEntry(entry)
-
-    setEntriesList([
-      ...entriesList,
-      {
-        id: id,
-        ...entry
+    try {
+      const entry = {
+        name,
+        text,
+        createdAt: getCurrentServerDate()
       }
-    ])
+
+      const id = await createJournalEntry(entry)
+
+      setEntriesList([
+        ...entriesList,
+        {
+          id: id,
+          ...entry
+        }
+      ])
+    } catch (err) {
+      setAlert({
+        title: 'Database error',
+        message: err.message
+      })
+    }
   }
 
   const deleteEntry = async () => {
-    await deleteJournalEntry(currentEntryInfo.id)
+    try {
+      await deleteJournalEntry(currentEntryInfo.id)
 
-    setEntriesList(entriesList.filter(entry => {
-      return entry.id !== currentEntryInfo.id
-    }))
+      setEntriesList(entriesList.filter(entry => {
+        return entry.id !== currentEntryInfo.id
+      }))
+    } catch (err) {
+      setAlert({
+        title: 'Database error',
+        message: err.message
+      })
+    }
   }
 
   return {

@@ -1,9 +1,10 @@
 import { QueryDocumentSnapshot, QuerySnapshot, SnapshotOptions, addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, setDoc } from "firebase/firestore"
 import { auth, firestore } from "../firebase/config"
 import { IJournalEntryInfo, IJournalEntryInfoToDatabase, IJournalEntriesList, IJournalListEntry } from "@/types/types"
+import { DatabaseError } from "./errors.service"
 
 const journalEntryConverter = {
-  toFirestore: ({ name, text, createdAt }: { name: string, text: string, createdAt: Date}) => {
+  toFirestore: ({ name, text, createdAt }: { name: string, text: string, createdAt: Date }) => {
     return {
       name,
       text,
@@ -23,7 +24,7 @@ const journalEntryConverter = {
 }
 
 const journalEntriesListConverter = {
-  toFirestore: ({ name, createdAt }: { name: string, createdAt: Date}) => {
+  toFirestore: ({ name, createdAt }: { name: string, createdAt: Date }) => {
     return {
       name,
       createdAt
@@ -61,7 +62,7 @@ export const getJournalEntries = async (): Promise<IJournalEntriesList> => {
 
     return entries;
   } catch (e) {
-    console.log(e.message)
+    throw new DatabaseError('Something unexpected happened... Try again later')
   }
 }
 
@@ -82,7 +83,7 @@ export const getJournalEntryInfo = async (id: string): Promise<IJournalEntryInfo
 
     return null
   } catch (e) {
-    console.log(e.message)
+    throw new DatabaseError('Something unexpected happened... Try again later')
   }
 }
 
@@ -101,7 +102,7 @@ export const updateJournalEntry = async (entry: IJournalEntryInfo) => {
     await setDoc(journalEntriesRef.withConverter(journalEntryConverter), entry)
 
   } catch (e) {
-    return false;
+    throw new DatabaseError('Something unexpected happened... Try again later')
   }
 }
 
@@ -122,7 +123,7 @@ export const createJournalEntry = async (entry: IJournalEntryInfoToDatabase) => 
 
     return entriesListDoc.id
   } catch (e) {
-    console.log(e.message)
+    throw new DatabaseError('Something unexpected happened... Try again later')
   }
 }
 
@@ -134,6 +135,6 @@ export const deleteJournalEntry = async (id: string) => {
 
     await deleteDoc(doc(firestore, 'users', userUid, 'journal-entries', id))
   } catch (e) {
-    console.log(e.message)
+    throw new DatabaseError('Something unexpected happened... Try again later')
   }
 }

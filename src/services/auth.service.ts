@@ -1,16 +1,23 @@
-import { NextOrObserver, User, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";  
+import { NextOrObserver, User, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { auth, firestore } from "../firebase/config";
 import { doc, setDoc } from "firebase/firestore";
+import { DatabaseError, ValidationError } from "./errors.service";
+import { FirebaseError } from "firebase/app";
 
 export const signUp = async (email: string, password: string, confirmation: string) => {
-  if(password !== confirmation){
-    return {
-      success: false,
-      message: "Passwords doesn't match"
-    };
+  if (!email) {
+    throw new ValidationError('Email field is empty')
   }
 
-  try{
+  if (!password) {
+    throw new ValidationError('Password field is empty')
+  }
+
+  if (password !== confirmation) {
+    throw new ValidationError("Passwords doesn't match")
+  }
+
+  try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password)
 
     const uid = userCredential.user.uid
@@ -18,32 +25,33 @@ export const signUp = async (email: string, password: string, confirmation: stri
     await setDoc(doc(firestore, 'users', uid), {
       email
     })
-    
-    return {
-      success: true,
-      message: ""
-    }
-  }catch(err){
-    return {
-      success: false,
-      message: err.message
-    }
+
+  } catch (err) {
+    const { code } = err
+
+    ValidationError.throwValidationError(code)
+
+    throw new DatabaseError('Something unexpected happened... Try again later')
   }
 }
 
 export const singIn = async (email: string, password: string) => {
-  try{
-    await signInWithEmailAndPassword(auth, email, password);
+  if (!email) {
+    throw new ValidationError('Email field is empty')
+  }
 
-    return {
-      success: true,
-      message: ''
-    }
-  }catch(err){
-    return {
-      success: false,
-      message: err.message
-    }
+  if (!password) {
+    throw new ValidationError('Password field is empty')
+  }
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+  } catch (err) {
+    const { code } = err
+
+    ValidationError.throwValidationError(code)
+
+    throw new DatabaseError('Something unexpected happened... Try again later')
   }
 }
 

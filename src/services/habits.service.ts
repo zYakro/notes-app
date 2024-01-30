@@ -1,6 +1,7 @@
 import { DocumentData, QueryDocumentSnapshot, SnapshotOptions, Timestamp, addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, setDoc } from "firebase/firestore"
 import { auth, firestore } from "../firebase/config"
 import { IGoals, IGoalsFromFirestore, IHabitInfo, IHabitInfoToDatabase, IHabitList, IHabitListItem, IHabitListItemToFirestore } from "@/types/types"
+import { DatabaseError } from "./errors.service"
 
 const goalsConverter = {
   toFirestore: (goals: IGoals): IGoals => {
@@ -95,7 +96,7 @@ export const getHabitList = async () => {
 
     return habits;
   } catch (e) {
-    console.log(e.message)
+    throw new DatabaseError('Something unexpected happened... Try again later')
   }
 }
 
@@ -116,7 +117,7 @@ export const getHabitInfo = async (id: string): Promise<IHabitInfo> => {
 
     return null
   } catch (e) {
-    console.log(e.message)
+    throw new DatabaseError('Something unexpected happened... Try again later')
   }
 }
 
@@ -136,7 +137,7 @@ export const updateHabit = async (habit: IHabitInfo) => {
     await setDoc(habitsDocRef.withConverter(habitConverter), habit)
 
   } catch (e) {
-    return console.log(e);
+    throw new DatabaseError('Something unexpected happened... Try again later')
   }
 }
 
@@ -158,7 +159,7 @@ export const createHabit = async (habit: IHabitInfoToDatabase) => {
 
     return habitListDoc.id
   } catch (e) {
-    console.log(e.message)
+    throw new DatabaseError('Something unexpected happened... Try again later')
   }
 }
 
@@ -170,6 +171,6 @@ export const deleteHabit = async (id: string) => {
 
     await deleteDoc(doc(firestore, 'users', userUid, 'habits', id))
   } catch (e) {
-    console.log(e.message)
+    throw new DatabaseError('Something unexpected happened... Try again later')
   }
 }

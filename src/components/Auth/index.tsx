@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import { Container } from './styled'
+import React, { useEffect } from 'react'
 import { SignIn } from './SignIn'
 import { SignUp } from './SignUp'
 import { isUserAuthenticated } from '../../services/auth.service'
@@ -16,13 +15,14 @@ export const Auth = () => {
   useEffect(() => {
     isUserAuthenticated(async (user: User) => {
       if (user) {
-        navigation.navigate('Main')
+        //navigation.navigate('Main')
+        console.log('user is logged in!')
       }
     })
   }, [])
 
   return (
-    <Stack.Navigator initialRouteName='SignIn' screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="SignIn" component={SignIn} />
       <Stack.Screen name="SignUp" component={SignUp} />
     </Stack.Navigator>

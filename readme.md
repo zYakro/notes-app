@@ -20,7 +20,7 @@ TODO:
 
 - [ ] Implement component testing
 - [ ] Improve folder and components structure
-- [ ] Remove magic strings in completed habit, goal and difficulty
+- [X] Remove magic strings in difficulty
 - [ ] Handle waiting screen while getting user
 - [X] Implement a custom alert using context 
 - [X] Add createdAt and completedAt to goals

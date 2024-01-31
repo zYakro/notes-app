@@ -11,12 +11,13 @@ type IGoalsList = {
   changeFocusedItem: (index: number) => void
   openEditor: (index: number) => void
   onCreateModal: () => void
-  focusedItemIndex: number
+  currentIndex: number
+  isTabOpen: boolean
 }
 
-export const GoalsList = ({ goals, changeFocusedItem, openEditor, focusedItemIndex, onCreateModal }: IGoalsList) => {
+export const GoalsList = ({ goals, changeFocusedItem, openEditor, currentIndex, onCreateModal, isTabOpen }: IGoalsList) => {
   return (
-    <GoalPanel title={"▣ Goals"}>
+    <GoalPanel title={"▣ Goals"} isTabOpen={isTabOpen}>
       <GoalListContainer>
         <GoalsFlatlist
           data={goals}
@@ -25,12 +26,12 @@ export const GoalsList = ({ goals, changeFocusedItem, openEditor, focusedItemInd
               goal={item}
               onPress={() => changeFocusedItem(index)}
               onLongPress={() => openEditor(index)}
-              isFocused={(focusedItemIndex === index)}
+              isFocused={(currentIndex === index)}
             />
           }
           keyExtractor={(_, index) => index.toString()}
         />
-        <AddFAB onPress={onCreateModal} iconSize={25}/>
+        <AddFAB onPress={onCreateModal} iconSize={25} />
       </GoalListContainer>
     </GoalPanel>
   )

@@ -5,8 +5,15 @@ import { GoalsMap } from './GoalsMap'
 import { GoalEditor } from './GoalEditor'
 import { CreateGoal } from './CreateGoal'
 import { useGoals } from '../../../hooks/useGoals/useGoals'
+import { IGoals } from '@/types/types'
 
-export const Goals = ({ goals, setGoals }) => {
+type IGoalsParams = {
+  goals: IGoals
+  setGoals: React.Dispatch<React.SetStateAction<IGoals>>
+  isTabOpen?: boolean
+}
+
+export const Goals = ({ goals, setGoals, isTabOpen = true}: IGoalsParams) => {
   const {
     currentIndex,
     setCurrentIndex,
@@ -41,13 +48,15 @@ export const Goals = ({ goals, setGoals }) => {
         goals={goals}
         changeFocusedItem={setCurrentIndex}
         openEditor={openEditor}
+        isTabOpen={isTabOpen}
         onCreateModal={openCreateGoal}
-        focusedItemIndex={currentIndex} />
+        currentIndex={currentIndex} />
       <GoalsMap
         goals={goals}
         changeFocusedItem={setCurrentIndex}
+        isTabOpen={isTabOpen}
         openEditor={openEditor}
-        focusedItemIndex={currentIndex} />
+        currentIndex={currentIndex} />
       { 
         isEditorVisible &&
         <GoalEditor

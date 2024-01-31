@@ -8,20 +8,29 @@ import { useNavigation } from '@react-navigation/native'
 import { AddFAB } from '../../Panels/AddFAB'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { IJournalEntriesList, Routes } from '@/types/types'
+import { useIsTabOpenOnFocus } from '@/hooks/useIsTabOpenOnFocus/useIsTabOpenOnPage'
+import { AnimatedPanel } from '@/components/Panels/AnimatedPanel'
 
 type IEntriesList = {
   entries: IJournalEntriesList,
-  getEntryInfo: (id: string) => Promise<void>
+  getEntryInfo: (id: string) => Promise<boolean>
 }
 
 export const EntriesList = ({ entries, getEntryInfo }: IEntriesList) => {
   const navigation = useNavigation<StackNavigationProp<Routes>>()
 
+  const [isTabOpen, setIsTabOpen] = useIsTabOpenOnFocus(true)
   const [searchValue, setSearchValue] = useState('')
 
   const openJournalEditor = async (id: string) => {
-    await getEntryInfo(id)
-    navigation.navigate('EditEntry')
+    setIsTabOpen(false)
+
+    const success = await getEntryInfo(id)
+
+    if (success)
+      return navigation.navigate('EditEntry')
+
+    setIsTabOpen(true)
   }
 
   const openCreateJournal = async () => {
@@ -35,7 +44,7 @@ export const EntriesList = ({ entries, getEntryInfo }: IEntriesList) => {
   return (
     <ViewContainer>
       <EntriesPanelContainer>
-        <AnimatedPanelOnFocus>
+        <AnimatedPanel isTabOpen={isTabOpen}>
           <SoloPanel title="▣ Journal Entries">
             <EntriesContainer>
               <Search
@@ -50,7 +59,7 @@ export const EntriesList = ({ entries, getEntryInfo }: IEntriesList) => {
               <AddFAB onPress={openCreateJournal} iconSize={35} />
             </EntriesContainer>
           </SoloPanel>
-        </AnimatedPanelOnFocus>
+        </AnimatedPanel>
       </EntriesPanelContainer>
     </ViewContainer>
   )

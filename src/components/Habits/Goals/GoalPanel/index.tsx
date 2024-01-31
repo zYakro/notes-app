@@ -2,18 +2,17 @@ import React from 'react'
 import { Container, Content } from './styled'
 import { AnimatedPanel } from '../../../Panels/AnimatedPanel'
 import { SoloPanel } from '../../../Panels/SoloPanel'
-import { AnimatedPanelOnFocus } from '../../../Panels/AnimatedPanelOnFocus'
 
-export const GoalPanel = ({ children, title }: { children: React.ReactNode, title: string }) => {
+export const GoalPanel = ({ children, title, isTabOpen }: { children: React.ReactNode, title: string, isTabOpen: boolean }) => {
   return (
     <Container>
-      <AnimatedPanelOnFocus>
+      <AnimatedPanel isTabOpen={isTabOpen}>
         <SoloPanel title={title}>
           <Content>
             {children}
           </Content>
         </SoloPanel>
-      </AnimatedPanelOnFocus>
+      </AnimatedPanel>
     </Container>
   )
 }

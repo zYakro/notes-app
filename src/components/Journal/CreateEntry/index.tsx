@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { Routes } from '@/types/types'
 import { useUnsavedChangesAlert } from '@/hooks/useUnsavedChangesAlert/useUnsavedChangesAlert'
+import { useIsTabOpenOnFocus } from '@/hooks/useIsTabOpenOnFocus/useIsTabOpenOnPage'
 
 type ICreateEntry = {
   createEntry: ({ }: { name: string, text: string }) => Promise<boolean>
@@ -14,6 +15,7 @@ type ICreateEntry = {
 export const CreateEntry = ({ createEntry }: ICreateEntry) => {
   const navigation = useNavigation<StackNavigationProp<Routes>>()
 
+  const [isTabOpen, setIsTabOpen] = useIsTabOpenOnFocus(true)
   const [name, setName] = useState('')
   const [text, setText] = useState('')
 
@@ -22,13 +24,17 @@ export const CreateEntry = ({ createEntry }: ICreateEntry) => {
   useUnsavedChangesAlert(hasUnsavedChanges)
 
   const onCreate = async () => {
+    setIsTabOpen(false) 
+
     const success = await createEntry({ name, text })
     if (success)
-      navigation.navigate('Entries')
+      return navigation.navigate('Entries')
+
+    setIsTabOpen(true)
   }
 
   return (
-    <EntryPanel title="▣ Text editor">
+    <EntryPanel title="▣ Text editor" isTabOpen={isTabOpen}>
       <PanelTopOptions>
         <PanelTopOption name="Create" onPress={onCreate} />
       </PanelTopOptions>

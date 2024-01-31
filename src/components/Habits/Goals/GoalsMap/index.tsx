@@ -7,20 +7,21 @@ import { IGoal, IGoals } from '@/types/types'
 
 type IGoalsMap = {
   goals: IGoals
-  focusedItemIndex: number
+  currentIndex: number
   openEditor: (index: number) => void
   changeFocusedItem: (index: number) => void
+  isTabOpen: boolean
 }
 
-export const GoalsMap = ({ goals, focusedItemIndex, openEditor, changeFocusedItem }: IGoalsMap) => {
+export const GoalsMap = ({ goals, currentIndex, openEditor, changeFocusedItem, isTabOpen }: IGoalsMap) => {
   return (
-    <GoalPanel title={"▣ Map"}>
+    <GoalPanel title={"▣ Map"} isTabOpen={isTabOpen}>
       <GoalsContainer>
         <StyledFlatList
           data={goals}
           renderItem={({ item, index }: ListRenderItemInfo<IGoal>) =>
             <Goal 
-              isFocused={(focusedItemIndex == index)}
+              isFocused={(currentIndex == index)}
               onPress={() => changeFocusedItem(index)}
               onLongPress={() => openEditor(index)}
               goal={item}

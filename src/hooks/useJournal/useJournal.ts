@@ -29,16 +29,20 @@ export const useJournal = () => {
     }
   }
 
-  const getEntryInfo = async (id: string) => {
+  const getEntryInfo = async (id: string): Promise<boolean> => {
     try {
       const info = await getJournalEntryInfo(id)
 
       setCurrentEntryInfo(info)
+
+      return true
     } catch (err) {
       setAlert({
         title: 'Database error',
         message: err.message
       })
+
+      return false
     }
   }
 
@@ -103,18 +107,22 @@ export const useJournal = () => {
     }
   }
 
-  const deleteEntry = async () => {
+  const deleteEntry = async (): Promise<boolean> => {
     try {
       await deleteJournalEntry(currentEntryInfo.id)
 
       setEntriesList(entriesList.filter(entry => {
         return entry.id !== currentEntryInfo.id
       }))
+
+      return true
     } catch (err) {
       setAlert({
         title: 'Database error',
         message: err.message
       })
+
+      return false
     }
   }
 

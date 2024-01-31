@@ -14,6 +14,7 @@ import { IHabitInfo, Routes } from '@/types/types'
 import { StackNavigationProp } from '@react-navigation/stack/lib/typescript/src/types'
 import { useUnsavedChangesAlert } from '@/hooks/useUnsavedChangesAlert/useUnsavedChangesAlert'
 import { PROGRESS_INCREMENT } from '@/constant/habitConsts'
+import { useIsTabOpenOnFocus } from '@/hooks/useIsTabOpenOnFocus/useIsTabOpenOnPage'
 
 type EditHabit = {
   habit: IHabitInfo | undefined
@@ -24,6 +25,8 @@ type EditHabit = {
 export const EditHabit = ({ habit, updateHabit, deleteHabit }: EditHabit) => {
   const navigation = useNavigation<StackNavigationProp<Routes>>()
   const { setAreYouSureAlert } = useContext(AlertsContext)
+
+  const [isTabOpen, setIsTabOpen] = useIsTabOpenOnFocus(true)
 
   const [name, setName] = useState<string>(habit.name)
   const [motivation, setMotivation] = useState(habit.motivation)
@@ -40,6 +43,8 @@ export const EditHabit = ({ habit, updateHabit, deleteHabit }: EditHabit) => {
   }
 
   const onSave = async () => {
+    setIsTabOpen(false)
+
     const success = await updateHabit({
       id: habit.id,
       name,
@@ -51,7 +56,9 @@ export const EditHabit = ({ habit, updateHabit, deleteHabit }: EditHabit) => {
     })
 
     if(success)
-      navigation.navigate('HabitList')
+      return navigation.navigate('HabitList')
+
+    setIsTabOpen(true)
   }
 
   const onDelete = async () => {
@@ -59,7 +66,10 @@ export const EditHabit = ({ habit, updateHabit, deleteHabit }: EditHabit) => {
       title: 'Delete habit',
       message: 'Are you sure you want to delete this habit? This action can not be undone.',
       onYes: async () => {
+        setIsTabOpen(false)
+
         await deleteHabit()
+
         navigation.navigate('HabitList')
       },
       onNo: () => {}
@@ -68,7 +78,7 @@ export const EditHabit = ({ habit, updateHabit, deleteHabit }: EditHabit) => {
 
   return (
     <ViewContainer>
-      <HabitsPanel title={"▣ Edit habit"}>
+      <HabitsPanel title={"▣ Edit habit"} isTabOpen={isTabOpen}>
         <PanelTopOptions>
           <PanelTopOption name="Delete" onPress={onDelete} />
           <PanelTopOption name="Save" onPress={onSave} />
@@ -98,7 +108,7 @@ export const EditHabit = ({ habit, updateHabit, deleteHabit }: EditHabit) => {
           </ButtonContainer>
         </FormContainer>
       </HabitsPanel>
-      <Goals goals={goals} setGoals={setGoals}/>
+      <Goals goals={goals} setGoals={setGoals} isTabOpen={isTabOpen} />
     </ViewContainer>
   )
 }

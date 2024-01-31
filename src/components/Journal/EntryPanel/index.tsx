@@ -1,22 +1,23 @@
 import { SoloPanel } from '../../Panels/SoloPanel'
 import { EntryPanelContainer, ViewContainer } from './styled'
-import { AnimatedPanelOnFocus } from '../../Panels/AnimatedPanelOnFocus'
 import React from 'react'
+import { AnimatedPanel } from '@/components/Panels/AnimatedPanel'
 
 type IEntryPanel = {
   title: string
   children: React.ReactNode
+  isTabOpen: boolean
 }
 
-export const EntryPanel = ({ title, children }: IEntryPanel) => {
+export const EntryPanel = ({ title, children, isTabOpen}: IEntryPanel) => {
   return (
     <ViewContainer>
       <EntryPanelContainer>
-        <AnimatedPanelOnFocus>
+        <AnimatedPanel isTabOpen={isTabOpen}>
           <SoloPanel title={title}>
             {children}
           </SoloPanel>
-        </AnimatedPanelOnFocus>
+        </AnimatedPanel>
       </EntryPanelContainer>
     </ViewContainer>
   )

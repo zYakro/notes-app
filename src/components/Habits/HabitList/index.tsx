@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { HabitsPanel } from '../HabitsPanel'
 import { HabitListContainer, ViewContainer } from './styled'
 import { Habit } from './Habit'
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { CreateHabitIconPanel } from './CreateHabitIconPanel';
 import { IHabitList, Routes } from '@/types/types';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useIsTabOpenOnFocus } from '@/hooks/useIsTabOpenOnFocus/useIsTabOpenOnPage';
 
 type IHabitListParams = {
   habits: IHabitList
@@ -15,7 +16,11 @@ type IHabitListParams = {
 export const HabitList = ({ habits, getHabitInfo }: IHabitListParams) => {
   const navigation = useNavigation<StackNavigationProp<Routes>>()
 
+  const [isTabOpen, setIsTabOpen] = useIsTabOpenOnFocus(true)
+
   const onEditHabit = async (id: string) => {
+    setIsTabOpen(false) 
+
     await getHabitInfo(id)
     navigation.navigate('EditHabit')
   }
@@ -26,7 +31,7 @@ export const HabitList = ({ habits, getHabitInfo }: IHabitListParams) => {
 
   return (
     <ViewContainer>
-      <HabitsPanel title={"▣ Habits"}>
+      <HabitsPanel title={"▣ Habits"} isTabOpen={isTabOpen}>
         <HabitListContainer>
           {
             habits.map(habit => {

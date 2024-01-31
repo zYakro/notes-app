@@ -10,13 +10,16 @@ import { HabitDifficulty, IGoals, Routes } from '@/types/types'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { useUnsavedChangesAlert } from '@/hooks/useUnsavedChangesAlert/useUnsavedChangesAlert'
 import { DIFFICULTY_EASY } from '@/constant/habitConsts'
+import { useIsTabOpenOnFocus } from '@/hooks/useIsTabOpenOnFocus/useIsTabOpenOnPage'
 
 type ICreateHabit = {
-  createHabit: ({}: {name: string, motivation: string, difficulty: HabitDifficulty, progress: number, goals: IGoals}) => Promise<boolean>
+  createHabit: ({ }: { name: string, motivation: string, difficulty: HabitDifficulty, progress: number, goals: IGoals }) => Promise<boolean>
 }
 
 export const CreateHabit = ({ createHabit }: ICreateHabit) => {
   const navigation = useNavigation<StackNavigationProp<Routes>>()
+
+  const [isTabOpen, setIsTabOpen] = useIsTabOpenOnFocus(true)
 
   const [name, setName] = useState('')
   const [motivation, setMotivation] = useState('')
@@ -28,6 +31,8 @@ export const CreateHabit = ({ createHabit }: ICreateHabit) => {
   useUnsavedChangesAlert(hasUnsavedChanges)
 
   const onCreateHabit = async () => {
+    setIsTabOpen(false)
+
     const success = await createHabit({
       name,
       motivation,
@@ -36,13 +41,15 @@ export const CreateHabit = ({ createHabit }: ICreateHabit) => {
       goals,
     })
 
-    if(success)
-      navigation.navigate('HabitList')
+    if (success)
+      return navigation.navigate('HabitList')
+
+    setIsTabOpen(true)
   }
 
   return (
     <ViewContainer>
-      <HabitsPanel title={"▣ Create habit"}>
+      <HabitsPanel title={"▣ Create habit"} isTabOpen={isTabOpen}>
         <Content>
           <BasicTextInput
             text={name}
@@ -65,7 +72,7 @@ export const CreateHabit = ({ createHabit }: ICreateHabit) => {
           </ButtonContainer>
         </Content>
       </HabitsPanel>
-      <Goals goals={goals} setGoals={setGoals} />
+      <Goals goals={goals} setGoals={setGoals} isTabOpen={isTabOpen} />
     </ViewContainer>
   )
 }

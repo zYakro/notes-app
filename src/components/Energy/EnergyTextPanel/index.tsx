@@ -1,7 +1,7 @@
 import React from 'react'
 import { EnergyPanelContainer, EnergyPanelContent, EnergyPanelTypingText, TypingTextScroll } from './styled'
 import { energyInfo } from '../../../utils/energy/energyInfo'
-import { animatedPanel } from '../../../constant/animationSettings/animatedPanel'
+import { animatedPanel } from '../../../constant/animatedPanelSettings'
 import { BasicPanel } from '../../Panels/BasicPanel'
 import { AnimatedPanelOnFocus } from '../../Panels/AnimatedPanelOnFocus'
 

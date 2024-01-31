@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native'
 import { HabitDifficulty, IGoals, Routes } from '@/types/types'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { useUnsavedChangesAlert } from '@/hooks/useUnsavedChangesAlert/useUnsavedChangesAlert'
+import { DIFFICULTY_EASY } from '@/constant/habitConsts'
 
 type ICreateHabit = {
   createHabit: ({}: {name: string, motivation: string, difficulty: HabitDifficulty, progress: number, goals: IGoals}) => Promise<boolean>
@@ -19,7 +20,7 @@ export const CreateHabit = ({ createHabit }: ICreateHabit) => {
 
   const [name, setName] = useState('')
   const [motivation, setMotivation] = useState('')
-  const [difficulty, setDifficulty] = useState<HabitDifficulty>('easy')
+  const [difficulty, setDifficulty] = useState<HabitDifficulty>(DIFFICULTY_EASY)
   const [goals, setGoals] = useState<IGoals>([])
 
   const hasUnsavedChanges = (name != '')

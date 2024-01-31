@@ -4,7 +4,7 @@ import { BatteryPanelContainer, BatteryPanelContent } from './styled'
 import { AnimatedPanel } from '../../Panels/AnimatedPanel'
 import { BasicPanel } from '../../Panels/BasicPanel'
 import { Battery } from '../Battery'
-import { animatedPanel } from '../../../constant/animationSettings/animatedPanel'
+import { animatedPanel } from '../../../constant/animatedPanelSettings'
 import { BasicCircularButton } from '../../Inputs/BasicCircularButton'
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { BatteryContext } from '../../../context/Battery/BatteryContext'

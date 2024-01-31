@@ -23,7 +23,7 @@ export const Habits = () => {
   }, [])
 
   return (
-    <Stack.Navigator initialRouteName='HabitList' screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{ headerShown: false}}>
       <Stack.Screen name="HabitList">
         {(props) => <HabitList {...props} habits={habitList} getHabitInfo={getHabitInfo}/>}
       </Stack.Screen>

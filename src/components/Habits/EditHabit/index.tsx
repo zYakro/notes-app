@@ -12,29 +12,34 @@ import { AlertsContext } from '@/context/Alerts/AlertsContext'
 import { useNavigation } from '@react-navigation/native'
 import { IHabitInfo, Routes } from '@/types/types'
 import { StackNavigationProp } from '@react-navigation/stack/lib/typescript/src/types'
+import { useUnsavedChangesAlert } from '@/hooks/useUnsavedChangesAlert/useUnsavedChangesAlert'
 
 type EditHabit = {
   habit: IHabitInfo | undefined
-  updateHabit: ({}: IHabitInfo) => Promise<void>
+  updateHabit: ({}: IHabitInfo) => Promise<boolean>
   deleteHabit: () => Promise<void>
 }
 
 export const EditHabit = ({ habit, updateHabit, deleteHabit }: EditHabit) => {
-  const [name, setName] = useState<string | undefined>(habit?.name || '')
-  const [motivation, setMotivation] = useState(habit?.motivation || '')
-  const [difficulty, setDifficulty] = useState(habit?.difficulty || 'easy')
-  const [progress, setProgress] = useState(habit?.progress || 0)
-  const [goals, setGoals] = useState(habit?.goals || [])
-
   const navigation = useNavigation<StackNavigationProp<Routes>>()
-  const { setAreYouSureAlert } = useContext(AlertsContext) 
+  const { setAreYouSureAlert } = useContext(AlertsContext)
+
+  const [name, setName] = useState<string>(habit.name || '')
+  const [motivation, setMotivation] = useState(habit.motivation || '')
+  const [difficulty, setDifficulty] = useState(habit.difficulty || 'easy')
+  const [progress, setProgress] = useState(habit.progress || 0)
+  const [goals, setGoals] = useState(habit.goals || [])
+
+  let hasUnsavedChanges = (name != habit.name || motivation != habit.motivation || difficulty != habit.difficulty || progress != habit.progress || goals.length != habit.goals.length)
+
+  useUnsavedChangesAlert(hasUnsavedChanges)
 
   const onComplete = () => {
     setProgress(progress + 1)
   }
 
   const onSave = async () => {
-    await updateHabit({
+    const success = await updateHabit({
       id: habit.id,
       name,
       motivation,
@@ -44,7 +49,8 @@ export const EditHabit = ({ habit, updateHabit, deleteHabit }: EditHabit) => {
       createdAt: habit.createdAt
     })
 
-    navigation.navigate('HabitList')
+    if(success)
+      navigation.navigate('HabitList')
   }
 
   const onDelete = async () => {

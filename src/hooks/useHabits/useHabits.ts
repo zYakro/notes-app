@@ -51,8 +51,13 @@ export const useHabits = () => {
     }
   }
 
-  const updateHabit = async ({ name, motivation, progress, createdAt, difficulty, goals }: IHabitInfo) => {
+  const updateHabit = async ({ name, motivation, progress, createdAt, difficulty, goals }: IHabitInfo): Promise<boolean> => {
     try {
+      if (!name) {
+        setAlert({ title: 'Set a name', message: 'You have to set a name for your habit!' })
+        return false;
+      }
+
       await updateHabitFromFirestore({
         id: currentHabitInfo.id,
         name,
@@ -74,16 +79,25 @@ export const useHabits = () => {
         }
         return item;
       }))
+
+      return true;
     } catch (err) {
       setAlert({
         title: 'Database error',
         message: err.message
       })
+
+      return false;
     }
   }
 
-  const createHabit = async ({ name, motivation, progress, difficulty, goals }: ICreateHabit) => {
+  const createHabit = async ({ name, motivation, progress, difficulty, goals }: ICreateHabit): Promise<boolean> => {
     try {
+      if (!name) {
+        setAlert({ title: 'Set a name', message: 'You have to set a name for your habit!' })
+        return false;
+      }
+
       const habit = {
         name,
         motivation,
@@ -103,11 +117,15 @@ export const useHabits = () => {
           ...habit
         }
       ])
+
+      return true;
     } catch (err) {
       setAlert({
         title: 'Database error',
         message: err.message
       })
+
+      return false;
     }
   }
 

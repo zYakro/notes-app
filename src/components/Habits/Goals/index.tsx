@@ -22,7 +22,7 @@ export const Goals = ({ goals, setGoals }) => {
     setIsEditorVisible(false)
   }
 
-  const openEditor = (index) => {
+  const openEditor = (index: number) => {
     setCurrentIndex(index)
     setIsEditorVisible(true)
   }

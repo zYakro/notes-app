@@ -19,6 +19,7 @@ export const MainNavigation = () => {
         }}
         tabBar={props => <TabBar {...props} />}
         initialRouteName='Home'
+        backBehavior='none'
       >
         <Tab.Screen name="Journal" component={JournalView} />
         <Tab.Screen name="Habits" component={HabitsView} />

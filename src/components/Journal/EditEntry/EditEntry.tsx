@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { PanelTopOptions, PanelTopOption } from '../../Panels/PanelTopOptions'
 import { EntryPanel } from '../EntryPanel'
 import { EntryForm } from '../EntryForm'
@@ -6,10 +6,11 @@ import { AlertsContext } from '../../../context/Alerts/AlertsContext'
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { IJournalEntryInfo, Routes } from '@/types/types'
+import { useUnsavedChangesAlert } from '@/hooks/useUnsavedChangesAlert/useUnsavedChangesAlert'
 
 type IEditEntry = {
   entryInfo: IJournalEntryInfo
-  updateEntry: ({}: {name: string, text: string}) => Promise<void>
+  updateEntry: ({}: {name: string, text: string}) => Promise<boolean>
   deleteEntry: () => Promise<void>
 }
 
@@ -17,8 +18,12 @@ export const EditEntry = ({ entryInfo, updateEntry, deleteEntry }: IEditEntry) =
   const { setAreYouSureAlert } = useContext(AlertsContext)
   const navigation = useNavigation<StackNavigationProp<Routes>>()
 
-  const [name, setName] = useState(entryInfo?.name || '')
-  const [text, setText] = useState(entryInfo?.text || '')
+  const [name, setName] = useState(entryInfo.name)
+  const [text, setText] = useState(entryInfo.text)
+
+  const hasUnsavedChanges = (name != entryInfo.name || text != entryInfo.text)
+
+  useUnsavedChangesAlert(hasUnsavedChanges)
 
   const onSave = async () => {
     await updateEntry({ name, text })

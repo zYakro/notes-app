@@ -27,7 +27,7 @@ TODO:
 - [X] Add createdAt to habits
 - [X] Delete habits
 - [X] Fix goals UI error on empty 
-- [ ] Put are you sure panel when changing screen when not saved changes
+- [X] Put are you sure panel when changing screen when not saved changes
 - [X] Handle errors with classes
 - [X] Handle errors in Journal and Habits
 - [X] Migrate to Typescript

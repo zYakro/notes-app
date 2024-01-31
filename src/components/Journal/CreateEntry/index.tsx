@@ -5,9 +5,10 @@ import { PanelTopOptions, PanelTopOption } from '../../Panels/PanelTopOptions'
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { Routes } from '@/types/types'
+import { useUnsavedChangesAlert } from '@/hooks/useUnsavedChangesAlert/useUnsavedChangesAlert'
 
 type ICreateEntry = {
-  createEntry: ({ }: { name: string, text: string }) => Promise<void>
+  createEntry: ({ }: { name: string, text: string }) => Promise<boolean>
 }
 
 export const CreateEntry = ({ createEntry }: ICreateEntry) => {
@@ -16,9 +17,14 @@ export const CreateEntry = ({ createEntry }: ICreateEntry) => {
   const [name, setName] = useState('')
   const [text, setText] = useState('')
 
+  const hasUnsavedChanges = (name != '' || text != '')
+
+  useUnsavedChangesAlert(hasUnsavedChanges)
+
   const onCreate = async () => {
-    await createEntry({ name, text })
-    navigation.navigate('Entries')
+    const success = await createEntry({ name, text })
+    if (success)
+      navigation.navigate('Entries')
   }
 
   return (

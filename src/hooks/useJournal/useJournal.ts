@@ -42,7 +42,7 @@ export const useJournal = () => {
     }
   }
 
-  const updateEntry = async ({ name, text }: { name: string, text: string }) => {
+  const updateEntry = async ({ name, text }: { name: string, text: string }): Promise<boolean> => {
     try {
       await updateJournalEntry({
         id: currentEntryInfo.id,
@@ -62,15 +62,19 @@ export const useJournal = () => {
         }
         return item
       }))
+
+      return true;
     } catch (err) {
       setAlert({
         title: 'Database error',
         message: err.message
       })
+
+      return false;
     }
   }
 
-  const createEntry = async ({ name, text }: { name: string, text: string }) => {
+  const createEntry = async ({ name, text }: { name: string, text: string }): Promise<boolean> => {
     try {
       const entry = {
         name,
@@ -87,11 +91,15 @@ export const useJournal = () => {
           ...entry
         }
       ])
+    
+      return true;
     } catch (err) {
       setAlert({
         title: 'Database error',
         message: err.message
       })
+
+      return false;
     }
   }
 

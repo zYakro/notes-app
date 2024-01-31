@@ -31,11 +31,12 @@ const goalsConverter = {
 }
 
 const habitConverter = {
-  toFirestore: ({ name, motivation, difficulty, goals, createdAt }: IHabitInfo) => {
+  toFirestore: ({ name, motivation, difficulty, progress, goals, createdAt }: IHabitInfo): IHabitInfoToDatabase => {
     return {
       name,
       motivation,
       difficulty,
+      progress,
       goals: goalsConverter.toFirestore(goals),
       createdAt,
     }
@@ -50,7 +51,7 @@ const habitConverter = {
       difficulty,
       progress,
       goals: goalsConverter.fromFirestore(goals),
-      createdAt,
+      createdAt: createdAt.toDate(),
     }
   }
 }
@@ -70,7 +71,7 @@ const habitListConverter = {
       id: snapshot.id,
       name,
       progress,
-      createdAt
+      createdAt: createdAt.toDate()
     }
   }
 }
@@ -88,10 +89,10 @@ export const getHabitList = async () => {
     const habits: IHabitList = []
 
     querySnapshot.forEach(doc => {
-      return {
+      habits.push({
         id: doc.id,
         ...doc.data()
-      }
+      })
     })
 
     return habits;

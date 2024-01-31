@@ -19,7 +19,7 @@ export const Navigation = () => {
   return (
     <>
       <NavigationContainer theme={theme} >
-        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Auth'>
+        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Auth' >
           <Stack.Screen name="Main" component={MainNavigation} />
           <Stack.Screen name="Auth" component={AuthView} />
         </Stack.Navigator>

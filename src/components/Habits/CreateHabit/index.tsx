@@ -6,19 +6,24 @@ import { ButtonContainer, Content, ViewContainer } from './styled'
 import { Goals } from '../Goals'
 import { BasicSubmitButton } from '../../Inputs/BasicSubmitButton'
 import { useNavigation } from '@react-navigation/native'
-import { Routes } from '@/types/types'
+import { HabitDifficulty, IGoals, Routes } from '@/types/types'
 import { StackNavigationProp } from '@react-navigation/stack'
+import { useUnsavedChangesAlert } from '@/hooks/useUnsavedChangesAlert/useUnsavedChangesAlert'
 
 export const CreateHabit = ({ createHabit }) => {
   const navigation = useNavigation<StackNavigationProp<Routes>>()
 
   const [name, setName] = useState('')
   const [motivation, setMotivation] = useState('')
-  const [difficulty, setDifficulty] = useState('easy')
-  const [goals, setGoals] = useState([])
+  const [difficulty, setDifficulty] = useState<HabitDifficulty>('easy')
+  const [goals, setGoals] = useState<IGoals>([])
 
-  const onCreateHabit = () => {
-    createHabit({
+  const hasUnsavedChanges = (name != '')
+
+  useUnsavedChangesAlert(hasUnsavedChanges)
+
+  const onCreateHabit = async () => {
+    const success = await createHabit({
       name,
       motivation,
       difficulty,
@@ -26,7 +31,8 @@ export const CreateHabit = ({ createHabit }) => {
       goals,
     })
 
-    navigation.navigate('HabitList')
+    if(success)
+      navigation.navigate('HabitList')
   }
 
   return (

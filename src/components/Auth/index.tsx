@@ -15,8 +15,7 @@ export const Auth = () => {
   useEffect(() => {
     isUserAuthenticated(async (user: User) => {
       if (user) {
-        //navigation.navigate('Main')
-        console.log('user is logged in!')
+        navigation.navigate('Main')
       }
     })
   }, [])

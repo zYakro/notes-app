@@ -1,11 +1,19 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { getCurrentServerDate } from '../../utils/firebase/getCurrentServerDate'
 import { GoalIcons, IGoals } from '@/types/types'
+import { AlertsContext } from '@/context/Alerts/AlertsContext'
 
 export const useGoals = (goals: IGoals, setGoals: React.Dispatch<React.SetStateAction<IGoals>>) => {
+  const { setAlert } = useContext(AlertsContext)
+
   const [currentIndex, setCurrentIndex] = useState(0)
 
-  const createGoal = (name: string, description: string, icon: GoalIcons) => {
+  const createGoal = (name: string, description: string, icon: GoalIcons): boolean => {
+    if (!name) {
+      setAlert({ title: 'Set a name', message: 'You have to set a name for your goal' })
+      return false;
+    }
+
     setGoals([
       ...goals,
       {
@@ -17,9 +25,16 @@ export const useGoals = (goals: IGoals, setGoals: React.Dispatch<React.SetStateA
         createdAt: getCurrentServerDate()
       }
     ])
+
+    return true;
   }
 
-  const editGoal = (name: string, description: string, icon: GoalIcons, isCompleted: boolean) => {
+  const editGoal = (name: string, description: string, icon: GoalIcons, isCompleted: boolean): boolean => {
+    if (!name) {
+      setAlert({ title: 'Set a name', message: 'You have to set a name for your goal' })
+      return false;
+    }
+
     // Replaces the habit in the focused item index with the new data
     setGoals(goals.map((item, index) => {
       if (index === currentIndex) {
@@ -36,6 +51,8 @@ export const useGoals = (goals: IGoals, setGoals: React.Dispatch<React.SetStateA
       }
       return item;
     }))
+
+    return true;
   }
 
   const deleteGoal = () => {

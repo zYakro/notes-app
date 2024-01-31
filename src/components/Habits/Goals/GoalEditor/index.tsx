@@ -38,10 +38,8 @@ export const GoalEditor = ({ goal, editGoal, deleteGoal, closeModal }: IGoalEdit
       message: 'Are you sure you want to delete this goal? This can not be undone, and will be deleted foverer if habit is saved!',
       onYes: () => {
         deleteGoal()
+        closeModal()
       },
-      onNo: () => {
-
-      }
     })
   }
 

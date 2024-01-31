@@ -10,7 +10,11 @@ import { HabitDifficulty, IGoals, Routes } from '@/types/types'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { useUnsavedChangesAlert } from '@/hooks/useUnsavedChangesAlert/useUnsavedChangesAlert'
 
-export const CreateHabit = ({ createHabit }) => {
+type ICreateHabit = {
+  createHabit: ({}: {name: string, motivation: string, difficulty: HabitDifficulty, progress: number, goals: IGoals}) => Promise<boolean>
+}
+
+export const CreateHabit = ({ createHabit }: ICreateHabit) => {
   const navigation = useNavigation<StackNavigationProp<Routes>>()
 
   const [name, setName] = useState('')

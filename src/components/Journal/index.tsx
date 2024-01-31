@@ -11,6 +11,7 @@ const Stack = createStackNavigator()
 export const Journal = () => {
   const {
     entriesList,
+    isListLoaded,
     currentEntryInfo,
     getEntriesList,
     getEntryInfo,
@@ -26,7 +27,7 @@ export const Journal = () => {
   return (
     <Stack.Navigator initialRouteName='Entries' screenOptions={{ headerShown: false }}>
       <Stack.Screen name='Entries'>
-        {(props) => <EntriesList {...props} entries={entriesList} getEntryInfo={getEntryInfo}/>}
+        {(props) => <EntriesList {...props} entries={entriesList} getEntryInfo={getEntryInfo} isListLoaded={isListLoaded} />}
       </Stack.Screen>
       <Stack.Screen name='EditEntry'>
         {(props) => <EditEntry {...props} entryInfo={currentEntryInfo} updateEntry={updateEntry} deleteEntry={deleteEntry} />}

@@ -22,19 +22,30 @@ type ICreateHabit = {
 export const useHabits = () => {
   const { setAlert } = useContext(AlertsContext)
 
+  const [isListLoaded, setIsListLoaded] = useState(false)
   const [habitList, setHabitList] = useState<IHabitList>([])
   const [currentHabitInfo, setCurrentHabitInfo] = useState<IHabitInfo>()
 
-  const getHabitList = async () => {
+  const getHabitList = async (): Promise<boolean> => {
     try {
+      setIsListLoaded(false)
+
       const habits = await getHabitsFromFirestore()
 
       setHabitList(habits)
+
+      setIsListLoaded(true)
+
+      return true
     } catch (err) {
       setAlert({
         title: 'Database error',
         message: err.message
       })
+
+      setIsListLoaded(true)
+
+      return false
     }
   }
 
@@ -147,6 +158,7 @@ export const useHabits = () => {
   return {
     habitList,
     currentHabitInfo,
+    isListLoaded,
     getHabitList,
     getHabitInfo,
     updateHabit,

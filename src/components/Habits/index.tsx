@@ -10,6 +10,7 @@ const Stack = createStackNavigator();
 export const Habits = () => {
   const {
     habitList,
+    isListLoaded,
     currentHabitInfo,
     getHabitList,
     getHabitInfo,
@@ -25,7 +26,7 @@ export const Habits = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false}}>
       <Stack.Screen name="HabitList">
-        {(props) => <HabitList {...props} habits={habitList} getHabitInfo={getHabitInfo}/>}
+        {(props) => <HabitList {...props} habits={habitList} getHabitInfo={getHabitInfo} isListLoaded={isListLoaded} />}
       </Stack.Screen>
       <Stack.Screen name="CreateHabit">
         {(props) => <CreateHabit {...props} createHabit={createHabit}/>}

@@ -22,7 +22,7 @@ TODO:
 - [ ] Improve folder and components structure
 - [X] Remove magic strings in difficulty
 - [ ] Handle waiting screen while getting user
-- [ ] Handle waiting for database items
+- [X] Handle waiting for database items
 - [X] Close panel on user action
 - [X] Implement a custom alert using context 
 - [X] Add createdAt and completedAt to goals

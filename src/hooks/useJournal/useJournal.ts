@@ -14,18 +14,29 @@ export const useJournal = () => {
   const { setAlert } = useContext(AlertsContext)
 
   const [entriesList, setEntriesList] = useState<IJournalEntriesList>([])
+  const [isListLoaded, setIsListLoaded] = useState(false)
   const [currentEntryInfo, setCurrentEntryInfo] = useState<IJournalEntryInfo>()
 
-  const getEntriesList = async () => {
+  const getEntriesList = async (): Promise<boolean> => {
     try {
+      setIsListLoaded(false)
+
       const entries = await getJournalEntries()
 
       setEntriesList(entries)
+
+      setIsListLoaded(true)
+
+      return true;
     } catch (err) {
       setAlert({
         title: 'Database error',
         message: err.message
       })
+
+      setIsListLoaded(true)
+
+      return false;
     }
   }
 
@@ -129,6 +140,7 @@ export const useJournal = () => {
   return {
     entriesList,
     currentEntryInfo,
+    isListLoaded,
     getEntriesList,
     getEntryInfo,
     updateEntry,

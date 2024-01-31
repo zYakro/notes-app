@@ -12,7 +12,7 @@ import { useIsTabOpenOnFocus } from '@/hooks/useIsTabOpenOnFocus/useIsTabOpenOnP
 type IEditEntry = {
   entryInfo: IJournalEntryInfo
   updateEntry: ({}: {name: string, text: string}) => Promise<boolean>
-  deleteEntry: () => Promise<void>
+  deleteEntry: () => Promise<boolean>
 }
 
 export const EditEntry = ({ entryInfo, updateEntry, deleteEntry }: IEditEntry) => {

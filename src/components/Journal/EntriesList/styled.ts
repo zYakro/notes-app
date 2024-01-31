@@ -70,3 +70,12 @@ export const ViewContainer = styled(View)`
   height: 100%;
   padding: 20px;
 `
+
+export const ListLoadingContainer = styled(View)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+`

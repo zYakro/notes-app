@@ -4,6 +4,6 @@ import { createContext } from "react";
 
 export const BatteryContext = createContext<IBatteryProviderReturn>({
   battery: 0,
-  increaseBattery: () => {},
-  canAddBattery : canAddBattery
+  increaseBattery: () => { },
+  canAddBattery: canAddBattery
 })

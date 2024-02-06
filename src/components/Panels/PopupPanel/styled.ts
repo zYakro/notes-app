@@ -5,7 +5,6 @@ export const PopupPanelContainer = styled(View)`
   max-width: 500px;
   max-height: 300px;
   width: 100%;
-  height: 100%;
   padding: 0 25px;
   display: flex;
   align-items: center;
@@ -18,6 +17,8 @@ export const OverlayBackground = styled(View)`
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.4);
+  width: 100%;
+  height: 100%;
 `
 
 export const CloseIconContainer = styled(TouchableOpacity)`

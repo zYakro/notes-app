@@ -1,6 +1,8 @@
 import { icons } from "@/utils/goals/icons"
 import { DocumentData, DocumentSnapshot, Timestamp } from "firebase/firestore"
 
+export type HEXColor = `#${string}`
+
 export type Routes = MainRoutes & HabitRoutes & JournalRoutes & AuthRoutes
 
 export type MainRoutes = {
@@ -33,7 +35,7 @@ export type IBatteryProviderReturn = {
 
 export type IAlertProviderReturn = {
   setAlert: ({ title, message }: ISetAlert) => void
-  setAreYouSureAlert: ({title, message, onYes, onNo}: ISetAreYouSurePanel) => void
+  setAreYouSureAlert: ({ title, message, onYes, onNo }: ISetAreYouSurePanel) => void
 }
 
 export type ISetAlert = {
@@ -82,7 +84,7 @@ export type IHabitInfo = {
   name: string
   motivation: string
   difficulty: HabitDifficulty
-  goals: IGoals 
+  goals: IGoals
   progress: number
   createdAt: Date
 }
@@ -91,7 +93,7 @@ export type IHabitInfoToDatabase = {
   name: string
   motivation: string
   difficulty: HabitDifficulty
-  goals: IGoals 
+  goals: IGoals
   progress: number
   createdAt: Date
 }
@@ -133,3 +135,43 @@ export type IJournalEntryInfo = {
 }
 
 export type IJournalEntriesList = IJournalListEntry[]
+
+export type ShopItemType = 'panel' | 'background' | 'theme'
+
+export type IShopItem = {
+  name: string
+  title: string
+  description: string
+  price: number
+  type: ShopItemType
+  itemProps: IShopItemImageProps
+}
+
+export type IShopItemImageProps = IShopItemThemeProps & IShopItemBackgroundProps
+
+export type IShopItemThemeProps = {
+  panelContentColor?: HEXColor
+  panelColor?: HEXColor
+  fontColor?: HEXColor
+  titleFontColor?: HEXColor
+}
+
+export type IShopItemBackgroundProps = {
+  image?: any
+}
+
+export type IShopItems = IShopItem[]
+
+export type IShopInventory = string[]
+
+export type IUserInfo = {
+  background: string
+  theme: string
+}
+
+export type IUserInfoContext = {
+  userInfo: IUserPreferences
+  changeUserInfo: (key: IUserPrefenceKey, value: string) => void
+}
+
+export type IUserInfoKey = 'background' | 'theme'

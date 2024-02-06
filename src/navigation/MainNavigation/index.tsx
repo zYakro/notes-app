@@ -6,6 +6,7 @@ import { TabBar } from './TabBar';
 import { HabitsView } from '../../views/HabitsView';
 import { JournalView } from '../../views/JournalView';
 import { StatusBar } from '../../components/StatusBar'
+import { ShopView } from '@/views/ShopView';
 
 const Tab = createBottomTabNavigator()
 
@@ -25,7 +26,7 @@ export const MainNavigation = () => {
         <Tab.Screen name="Habits" component={HabitsView} />
         <Tab.Screen name="Home" component={HomeView} />
         <Tab.Screen name="Energy" component={EnergyView} />
-        <Tab.Screen name="Shop" component={EnergyView} />
+        <Tab.Screen name="Shop" component={ShopView} />
       </Tab.Navigator >
     </>
   )

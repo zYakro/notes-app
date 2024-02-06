@@ -8,7 +8,7 @@ type IPopupPanel = {
   onCloseModal?: () => void
   visible: boolean
   title: string
-  style: ViewStyle
+  style?: ViewStyle
 }
 
 export const PopupPanel = ({ children, onCloseModal, visible, title, style }: IPopupPanel) => {

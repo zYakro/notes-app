@@ -34,4 +34,4 @@ TODO:
 - [X] Handle errors in Journal and Habits
 - [X] Migrate to Typescript
 - [ ] Migrate to Suprabase
-- [ ] Create the shop view
+- [X] Create the shop view

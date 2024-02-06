@@ -35,3 +35,6 @@ TODO:
 - [X] Migrate to Typescript
 - [ ] Migrate to Suprabase
 - [X] Create the shop view
+- [X] User info view
+- [ ] Add panels with user info
+- [ ] Add more shop items, themes, panels and wallpapers

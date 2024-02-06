@@ -3,6 +3,7 @@ import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { MainNavigation } from './MainNavigation';
 import { AuthView } from '../views/AuthView'
 import { createStackNavigator } from '@react-navigation/stack';
+import { UserView } from '@/views/UserView';
 
 const Stack = createStackNavigator()
 
@@ -22,6 +23,7 @@ export const Navigation = () => {
         <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Auth' >
           <Stack.Screen name="Main" component={MainNavigation} />
           <Stack.Screen name="Auth" component={AuthView} />
+          <Stack.Screen name="User" component={UserView} />
         </Stack.Navigator>
       </NavigationContainer>
     </>

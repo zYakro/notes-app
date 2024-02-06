@@ -8,6 +8,7 @@ export type Routes = MainRoutes & HabitRoutes & JournalRoutes & AuthRoutes
 export type MainRoutes = {
   Auth
   Main
+  User
 }
 
 export type HabitRoutes = {

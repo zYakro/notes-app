@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import styled from "styled-components";
 
@@ -9,6 +9,10 @@ export const EntriesContainer = styled(View)`
   min-width: 100%;
   min-height: 90%;
   padding: 0 15px;
+`
+
+export const EntriesScrollView = styled(ScrollView)`
+  flex: 1;
 `
 
 export const SearchContainer = styled(View)`

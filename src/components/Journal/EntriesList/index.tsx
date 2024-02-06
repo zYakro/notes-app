@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { EntriesContainer, EntriesPanelContainer, ListLoadingContainer, ViewContainer } from './styled'
+import { EntriesContainer, EntriesPanelContainer, EntriesScrollView, ListLoadingContainer, ViewContainer } from './styled'
 import { Search } from './Search'
 import { Entry } from './Entry'
 import { SoloPanel } from '../../Panels/SoloPanel'
@@ -52,11 +52,13 @@ export const EntriesList = ({ entries, getEntryInfo, isListLoaded }: IEntriesLis
                 searchValue={searchValue}
                 setSearchValue={setSearchValue}
               />
-              {
-                searchedEntries.map(entry => {
-                  return <Entry key={entry.id} onPress={openJournalEditor} {...entry} />
-                })
-              }
+              <EntriesScrollView>
+                {
+                  searchedEntries.map(entry => {
+                    return <Entry key={entry.id} onPress={openJournalEditor} {...entry} />
+                  })
+                }
+              </EntriesScrollView>
               {
                 !isListLoaded &&
                 <ListLoadingContainer>

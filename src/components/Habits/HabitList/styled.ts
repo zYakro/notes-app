@@ -1,14 +1,13 @@
-import { Pressable, Text, View } from "react-native";
+import { Pressable, Text, View, ScrollView } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import styled from "styled-components";
 
-export const HabitListContainer = styled(View)`
+export const HabitListContainer = styled(ScrollView)`
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
   gap: 10px;
+  padding: 0 4px;
 `
 
 export const HabitContainer = styled(View)`

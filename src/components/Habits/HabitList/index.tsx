@@ -36,7 +36,7 @@ export const HabitList = ({ habits, getHabitInfo, isListLoaded }: IHabitListPara
         {
           !isListLoaded &&
           <ActivityIndicatorContainer>
-            <LoadingIndicator animating={true} size={40}/>
+            <LoadingIndicator animating={true} size={40} />
           </ActivityIndicatorContainer>
         }
         <HabitListContainer>

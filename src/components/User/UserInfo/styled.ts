@@ -29,12 +29,21 @@ export const UserStats = styled(View)`
 
 export const Level = styled(Text)`
   color: ${({ theme }) => theme.text.color};
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
 export const Exp = styled(Text)`
   color: ${({ theme }) => theme.text.color};
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
 export const Coins = styled(Text)`
   color: ${({ theme }) => theme.text.color};
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `

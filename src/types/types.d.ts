@@ -168,11 +168,13 @@ export type IShopInventory = string[]
 export type IUserInfo = {
   background: string
   theme: string
+  coins: number
+  exp: number
 }
 
 export type IUserInfoContext = {
-  userInfo: IUserPreferences
+  userInfo: IUserInfo
   changeUserInfo: (key: IUserPrefenceKey, value: string) => void
 }
 
-export type IUserInfoKey = 'background' | 'theme'
+export type IUserInfoKey = keyof IUserInfo

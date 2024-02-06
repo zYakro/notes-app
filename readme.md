@@ -15,6 +15,7 @@ Things learned so far:
 - Firestore and Authentication with Firebase
 - The use of multiple navigations in the app
 - Error handling using classes
+- React context, custom hooks, react navigation
 
 TODO: 
 
@@ -36,5 +37,7 @@ TODO:
 - [ ] Migrate to Suprabase
 - [X] Create the shop view
 - [X] User info view
+- [X] Finish user info fields in context
+- [ ] Add exp on finished habit & update level based on exp
 - [ ] Add panels with user info
 - [ ] Add more shop items, themes, panels and wallpapers

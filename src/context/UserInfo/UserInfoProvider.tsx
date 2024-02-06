@@ -5,7 +5,9 @@ import { IUserInfo, IUserInfoKey } from '@/types/types'
 export const UserInfoProvider = ({ children }: { children: React.ReactNode }) => {
   const [userInfo, setUserInfo] = useState<IUserInfo>({
     background: 'light-screen',
-    theme: 'main-theme'
+    theme: 'main-theme',
+    coins: 0,
+    exp: 0
   })
 
   const getUserPreferences = async () => {

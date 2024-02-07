@@ -163,3 +163,5 @@ export type IUserInfoContext = {
 }
 
 export type IUserPreferencesKey = keyof UserPreferences
+
+export type InventoryType = string[]

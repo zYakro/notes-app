@@ -1,8 +1,9 @@
 import { SHOP_ITEM_TYPE_BACKGROUND, SHOP_ITEM_TYPE_THEME } from '@/constant/shopConsts'
 import { AlertsContext } from '@/context/Alerts/AlertsContext'
 import { UserInfoContext } from '@/context/UserInfo/UserInfoContext'
+import { getInventory } from '@/services/shop.service'
 import { IShopInventory, IShopItem, IShopItems, ShopItemType } from '@/types/types'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 export const useShop = () => {
   const { setAlert } = useContext(AlertsContext)
@@ -111,6 +112,23 @@ export const useShop = () => {
     if (type == SHOP_ITEM_TYPE_BACKGROUND || type == SHOP_ITEM_TYPE_THEME)
       changeUserPreference(type, name)
   }
+
+  const getUserInventory = async () => {
+    try{
+      const inventory = await getInventory();
+
+      setInventory(inventory)
+    }catch(e){
+      setAlert({
+        title: 'Error',
+        message: e.message
+      })
+    }
+  }
+
+  useEffect(() => {
+    getUserInventory()
+  }, [])
 
   return {
     inventory,

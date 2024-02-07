@@ -15,6 +15,7 @@ import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { AlertsContext } from '@/context/Alerts/AlertsContext'
 import { signOut } from '@/services/auth.service'
+import { useIsTabOpenOnFocus } from '@/hooks/useIsTabOpenOnFocus/useIsTabOpenOnPage'
 
 export const User = () => {
   const {
@@ -29,6 +30,8 @@ export const User = () => {
 
   const { setAlert } = useContext(AlertsContext)
 
+  const [isTabOpen, setIsTabOpen] = useIsTabOpenOnFocus(true)
+
   const [isInfoModalVisible, setIsInfoModalVisible] = useState(false)
 
   const showItemInfo = (shopItem: IShopItem) => {
@@ -41,6 +44,8 @@ export const User = () => {
   }
 
   const onSignOut = async () => {
+    setIsTabOpen(false)
+
     try {
       await signOut()
 
@@ -51,6 +56,8 @@ export const User = () => {
         message: e.message
       })
     }
+
+    setIsTabOpen(true)
   }
 
   const inventoryItems = shopItems.filter(item => inventory.includes(item.name))

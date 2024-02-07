@@ -10,18 +10,22 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { Routes } from '@/types/types'
 import { DatabaseError, ValidationError } from '@/services/errors.service'
 import { AlertsContext } from '@/context/Alerts/AlertsContext'
+import { useIsTabOpenOnFocus } from '@/hooks/useIsTabOpenOnFocus/useIsTabOpenOnPage'
 
 export const SignUp = () => {
   const { setAlert } = useContext(AlertsContext)
 
   const navigation = useNavigation<StackNavigationProp<Routes>>()
 
+  const [isTabOpen, setIsTabOpen] = useIsTabOpenOnFocus(true)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmation, setConfirmation] = useState('')
   const [error, setError] = useState('')
 
   const signUpOnSubmit = async () => {
+    setIsTabOpen(false)
+
     try {
       await signUp(email, password, confirmation)
     }
@@ -37,6 +41,8 @@ export const SignUp = () => {
         })
       }
     }
+
+    setIsTabOpen(true)
   }
 
   const navigateToSignIn = () => {
@@ -44,7 +50,7 @@ export const SignUp = () => {
   }
 
   return (
-    <AuthPanel title={"▣ Sign Up"}>
+    <AuthPanel title={"▣ Sign Up"} isTabOpen={isTabOpen}>
       <BasicTextInputForm
         text={email}
         onChangeText={setEmail}

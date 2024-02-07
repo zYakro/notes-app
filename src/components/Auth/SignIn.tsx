@@ -11,19 +11,24 @@ import { Routes } from '@/types/types'
 import { ViewContainer } from './styled'
 import { DatabaseError, ValidationError } from '@/services/errors.service'
 import { AlertsContext } from '@/context/Alerts/AlertsContext'
+import { useIsTabOpenOnFocus } from '@/hooks/useIsTabOpenOnFocus/useIsTabOpenOnPage'
 
 export const SignIn = () => {
   const { setAlert } = useContext(AlertsContext)
 
   const navigation = useNavigation<StackNavigationProp<Routes>>()
 
+  const [isTabOpen, setIsTabOpen] = useIsTabOpenOnFocus(true)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
   const signInOnSubmit = async () => {
+    setIsTabOpen(false)
+
     try {
       await singIn(email, password)
+
     }
     catch (err) {
       if (err instanceof ValidationError) {
@@ -37,6 +42,8 @@ export const SignIn = () => {
         })
       }
     }
+
+    setIsTabOpen(true)
   }
 
   const navigateToSignUp = () => {
@@ -44,7 +51,7 @@ export const SignIn = () => {
   }
 
   return (
-    <AuthPanel title={"▣ Sign In"} >
+    <AuthPanel title={"▣ Sign In"} isTabOpen={isTabOpen}>
       <BasicTextInputForm
         text={email}
         onChangeText={setEmail}

@@ -6,20 +6,21 @@ import { AnimatedPanelOnFocus } from '../Panels/AnimatedPanelOnFocus'
 
 interface AuthPanelProps {
   title: string
+  isTabOpen?: boolean
   children: React.ReactNode
 }
 
-export const AuthPanel = ({ title, children }: AuthPanelProps) => {
+export const AuthPanel = ({ isTabOpen = true, title, children }: AuthPanelProps) => {
   return (
     <ViewContainer>
       <AuthPanelContainer>
-        <AnimatedPanelOnFocus>
+        <AnimatedPanel isTabOpen={isTabOpen}>
           <BasicPanel title={title}>
             <ContentContainer>
               {children}
             </ContentContainer>
           </BasicPanel>
-        </AnimatedPanelOnFocus>
+        </AnimatedPanel>
       </AuthPanelContainer>
     </ViewContainer>
   )

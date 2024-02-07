@@ -1,36 +1,67 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { UserInfoContext } from './UserInfoContext'
-import { IUserInfo, IUserInfoKey } from '@/types/types'
+import { IUserInfo, IUserPreferencesKey } from '@/types/types'
+import { getUserInfo, updateUserInfo } from '@/services/user.service'
+import { AlertsContext } from '../Alerts/AlertsContext'
+import { supabase } from '@/supabase/config'
 
 export const UserInfoProvider = ({ children }: { children: React.ReactNode }) => {
+  const { setAlert } = useContext(AlertsContext)
+
   const [userInfo, setUserInfo] = useState<IUserInfo>({
-    background: 'light-screen',
-    theme: 'main-theme',
+    email: '',
     coins: 0,
-    exp: 0
+    exp: 0,
+    preferences: {
+      background: 'light-screen',
+      theme: 'main-theme',
+    }
   })
 
   const getUserPreferences = async () => {
     try {
-      // API call
-    } catch (e) {
+      const data = await getUserInfo()
 
+      setUserInfo(data)
+    } catch (e) {
+      setAlert({
+        title: 'Error',
+        message: e.message
+      })
     }
   }
 
-  const changeUserInfo = async (key: IUserInfoKey, value: string) => {
-    setUserInfo({
+  const changeUserPreference = async (key: IUserPreferencesKey, value: string) => {
+    const newUserInfo = {
       ...userInfo,
-      [key]: value
-    })
+      preferences: {
+        ...userInfo.preferences,
+        [key]: value
+      }
+    }
+
+    setUserInfo(newUserInfo)
+
+    try {
+      await updateUserInfo(newUserInfo)
+    } catch (e) {
+      setAlert({
+        title: 'Error',
+        message: e.message
+      })
+    }
   }
 
   useEffect(() => {
-    getUserPreferences()
+    supabase.auth.onAuthStateChange((event) => {
+      if (event == 'SIGNED_IN' || event == 'INITIAL_SESSION') {
+        getUserPreferences()
+      }
+    })
   }, [])
 
   return (
-    <UserInfoContext.Provider value={{ userInfo, changeUserInfo }}>
+    <UserInfoContext.Provider value={{ userInfo, changeUserPreference }}>
       {children}
     </UserInfoContext.Provider>
   )

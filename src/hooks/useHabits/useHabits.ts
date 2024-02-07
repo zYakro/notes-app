@@ -6,7 +6,6 @@ import {
   createHabit as createHabitFromFirestore,
   deleteHabit as deleteHabitFromFirestore
 } from "../../services/habits.service"
-import { getCurrentServerDate } from "../../utils/firebase/getCurrentServerDate"
 import { HabitDifficulty, IGoals, IHabitInfo, IHabitList } from "@/types/types"
 import { AlertsContext } from "@/context/Alerts/AlertsContext"
 
@@ -62,7 +61,7 @@ export const useHabits = () => {
     }
   }
 
-  const updateHabit = async ({ name, motivation, progress, createdAt, difficulty, goals }: IHabitInfo): Promise<boolean> => {
+  const updateHabit = async ({ name, motivation, progress, difficulty, goals }: IHabitInfo): Promise<boolean> => {
     try {
       if (!name) {
         setAlert({ title: 'Set a name', message: 'You have to set a name for your habit!' })
@@ -74,7 +73,6 @@ export const useHabits = () => {
         name,
         motivation,
         progress,
-        createdAt,
         difficulty,
         goals
       })
@@ -85,7 +83,6 @@ export const useHabits = () => {
             id: item.id,
             name,
             progress,
-            createdAt
           }
         }
         return item;
@@ -115,8 +112,6 @@ export const useHabits = () => {
         progress,
         difficulty,
         goals,
-        completedAt: getCurrentServerDate(),
-        createdAt: getCurrentServerDate()
       }
 
       const id = await createHabitFromFirestore(habit)

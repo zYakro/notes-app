@@ -1,4 +1,4 @@
-import { AuthErrorCodes } from "firebase/auth"
+const AuthErrorCodes: any = {};
 
 export class ValidationError extends Error {
   constructor(message: string) {

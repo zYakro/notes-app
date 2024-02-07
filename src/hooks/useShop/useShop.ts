@@ -6,7 +6,7 @@ import React, { useContext, useState } from 'react'
 
 export const useShop = () => {
   const { setAlert } = useContext(AlertsContext)
-  const { userInfo, changeUserInfo } = useContext(UserInfoContext)
+  const { userInfo, changeUserPreference } = useContext(UserInfoContext)
 
   const [currentItem, setCurrentItem] = useState<IShopItem>()
   const [inventory, setInventory] = useState<IShopInventory>(['main-theme', 'night-background', 'light-screen'])
@@ -109,7 +109,7 @@ export const useShop = () => {
 
   const selectItem = (name: string, type: ShopItemType) => {
     if (type == SHOP_ITEM_TYPE_BACKGROUND || type == SHOP_ITEM_TYPE_THEME)
-      changeUserInfo(type, name)
+      changeUserPreference(type, name)
   }
 
   return {

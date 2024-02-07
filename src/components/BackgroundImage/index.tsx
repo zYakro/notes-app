@@ -12,7 +12,7 @@ export const BackgroundImage = ({ children }: { children: React.ReactNode }) => 
 
   return (
     <ImageBackground
-      source={Backgrounds[userInfo.background]}
+      source={Backgrounds[userInfo.preferences.background]}
       style={{ flex: 1 }}
       resizeMode='stretch'
     >

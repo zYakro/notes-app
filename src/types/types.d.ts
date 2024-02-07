@@ -52,8 +52,7 @@ export type ISetAreYouSurePanel = {
 }
 
 export type HabitInfo = {
-  id: string
-
+  id: number
 } | {}
 
 export type IGoal = {
@@ -65,15 +64,6 @@ export type IGoal = {
   createdAt: Date
 }
 
-export type IGoalFromFirestore = {
-  name: string
-  description: string
-  icon: GoalIcons
-  isCompleted: boolean
-  completedAt: Timestamp
-  createdAt: Timestamp
-}
-
 export type IGoals = IGoal[]
 
 export type IGoalsFromFirestore = IGoalFromFirestore[]
@@ -81,13 +71,12 @@ export type IGoalsFromFirestore = IGoalFromFirestore[]
 export type HabitDifficulty = 'easy' | 'medium' | 'hard'
 
 export type IHabitInfo = {
-  id: string
+  id: number
   name: string
   motivation: string
   difficulty: HabitDifficulty
   goals: IGoals
   progress: number
-  createdAt: Date
 }
 
 export type IHabitInfoToDatabase = {
@@ -96,20 +85,12 @@ export type IHabitInfoToDatabase = {
   difficulty: HabitDifficulty
   goals: IGoals
   progress: number
-  createdAt: Date
 }
 
 export type IHabitListItem = {
-  id: string
+  id: number
   name: string
   progress: number
-  createdAt: Date
-}
-
-export type IHabitListItemToFirestore = {
-  name: string
-  progress: number
-  createdAt: Date
 }
 
 export type IHabitList = IHabitListItem[]
@@ -117,22 +98,21 @@ export type IHabitList = IHabitListItem[]
 export type GoalIcons = keyof typeof icons
 
 export type IJournalListEntry = {
-  id: string
+  id: number
   name: string
-  createdAt: Date
-}
-
-export type IJournalEntryInfoToDatabase = {
-  name: string
-  text: string
   createdAt: Date
 }
 
 export type IJournalEntryInfo = {
-  id: string
+  id: number
   name: string
   text: string
   createdAt: Date
+}
+
+export type IJournalEntryToDatabase = {
+  name: string
+  text: string
 }
 
 export type IJournalEntriesList = IJournalListEntry[]
@@ -166,15 +146,20 @@ export type IShopItems = IShopItem[]
 export type IShopInventory = string[]
 
 export type IUserInfo = {
-  background: string
-  theme: string
   coins: number
   exp: number
+  email: string
+  preferences: IUserPreferences
+}
+
+export type IUserPreferences = {
+  background: string
+  theme: string
 }
 
 export type IUserInfoContext = {
   userInfo: IUserInfo
-  changeUserInfo: (key: IUserPrefenceKey, value: string) => void
+  changeUserPreference: (key: IUserPreferencesKey, value: string) => void
 }
 
-export type IUserInfoKey = keyof IUserInfo
+export type IUserPreferencesKey = keyof UserPreferences

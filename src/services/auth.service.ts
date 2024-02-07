@@ -1,8 +1,5 @@
-import { NextOrObserver, User, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
-import { auth, firestore } from "../firebase/config";
-import { doc, setDoc } from "firebase/firestore";
+import { supabase } from "@/supabase/config";
 import { DatabaseError, ValidationError } from "./errors.service";
-import { FirebaseError } from "firebase/app";
 
 export const signUp = async (email: string, password: string, confirmation: string) => {
   if (!email) {
@@ -18,14 +15,23 @@ export const signUp = async (email: string, password: string, confirmation: stri
   }
 
   try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+    const { data, error } = await supabase.auth.signUp({ email, password })
 
-    const uid = userCredential.user.uid
+    if (error) throw error;
 
-    await setDoc(doc(firestore, 'users', uid), {
-      email
-    })
+    const request = await supabase
+      .from('users')
+      .insert({
+        email: email,
+        coins: 0,
+        exp: 0,
+        preferences: {
+          background: 'light-screen',
+          theme: 'main-theme'
+        }
+      })
 
+    if (request.error) throw error;
   } catch (err) {
     const { code } = err
 
@@ -45,7 +51,9 @@ export const singIn = async (email: string, password: string) => {
   }
 
   try {
-    await signInWithEmailAndPassword(auth, email, password);
+    const { error} = await supabase.auth.signInWithPassword({ email, password });
+
+    if(error) throw error
   } catch (err) {
     const { code } = err
 
@@ -55,6 +63,6 @@ export const singIn = async (email: string, password: string) => {
   }
 }
 
-export const isUserAuthenticated = (onChange: NextOrObserver<User>) => {
-  onAuthStateChanged(auth, onChange)
+export const isUserAuthenticated = (onChange: any) => {
+
 }

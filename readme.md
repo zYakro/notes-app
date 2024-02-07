@@ -12,7 +12,8 @@ Things learned so far:
 
 - Typescript migration
 - Don't use magic strings, instead use constants
-- Firestore and Authentication with Firebase
+- Firestore and Authentication with Firebase & Firebase Security Rules
+- Supabase authentication, database and PostgreSQL & Row Security Policies  
 - The use of multiple navigations in the app
 - Error handling using classes
 - React context, custom hooks, react navigation
@@ -34,7 +35,8 @@ TODO:
 - [X] Handle errors with classes
 - [X] Handle errors in Journal and Habits
 - [X] Migrate to Typescript
-- [ ] Migrate to Suprabase
+- [X] Migrate to Supabase
+- [ ] Use Supabase row policies
 - [X] Create the shop view
 - [X] User info view
 - [X] Finish user info fields in context

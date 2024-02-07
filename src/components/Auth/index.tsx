@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react'
 import { SignIn } from './SignIn'
 import { SignUp } from './SignUp'
-import { isUserAuthenticated } from '../../services/auth.service'
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp, createStackNavigator } from '@react-navigation/stack'
 import { Routes } from '@/types/types'
-import { User } from 'firebase/auth'
+import { supabase } from '@/supabase/config'
 
 const Stack = createStackNavigator()
 
@@ -13,8 +12,8 @@ export const Auth = () => {
   const navigation = useNavigation<StackNavigationProp<Routes>>()
 
   useEffect(() => {
-    isUserAuthenticated(async (user: User) => {
-      if (user) {
+    supabase.auth.onAuthStateChange((event) => {
+      if(event == 'SIGNED_IN' || event == 'INITIAL_SESSION'){
         navigation.navigate('Main')
       }
     })

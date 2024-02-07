@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react'
-import { getCurrentServerDate } from '../../utils/firebase/getCurrentServerDate'
 import { GoalIcons, IGoals } from '@/types/types'
 import { AlertsContext } from '@/context/Alerts/AlertsContext'
 
@@ -21,8 +20,8 @@ export const useGoals = (goals: IGoals, setGoals: React.Dispatch<React.SetStateA
         description,
         icon,
         isCompleted: false,
-        completedAt: getCurrentServerDate(),
-        createdAt: getCurrentServerDate()
+        completedAt: new Date(),
+        createdAt: new Date()
       }
     ])
 
@@ -45,7 +44,7 @@ export const useGoals = (goals: IGoals, setGoals: React.Dispatch<React.SetStateA
           description,
           icon,
           isCompleted: isCompleted,
-          completedAt: (hasBeenCompleted) ? getCurrentServerDate() : item.completedAt,
+          completedAt: (hasBeenCompleted) ? new Date() : item.completedAt,
           createdAt: item.createdAt,
         }
       }

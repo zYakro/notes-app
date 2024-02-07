@@ -6,7 +6,6 @@ import {
   createJournalEntry,
   deleteJournalEntry,
 } from "../../services/journal.service"
-import { getCurrentServerDate } from '../../utils/firebase/getCurrentServerDate'
 import { IJournalEntriesList, IJournalEntryInfo } from '@/types/types'
 import { AlertsContext } from '@/context/Alerts/AlertsContext'
 
@@ -94,7 +93,7 @@ export const useJournal = () => {
       const entry = {
         name,
         text,
-        createdAt: getCurrentServerDate()
+        createdAt: new Date()
       }
 
       const id = await createJournalEntry(entry)

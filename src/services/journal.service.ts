@@ -1,66 +1,46 @@
-import { QueryDocumentSnapshot, QuerySnapshot, SnapshotOptions, addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, setDoc } from "firebase/firestore"
-import { auth, firestore } from "../firebase/config"
-import { IJournalEntryInfo, IJournalEntryInfoToDatabase, IJournalEntriesList, IJournalListEntry } from "@/types/types"
+import { IJournalEntryInfo, IJournalEntriesList, IJournalListEntry, IJournalEntryToDatabase } from "@/types/types"
 import { DatabaseError } from "./errors.service"
+import { supabase } from "@/supabase/config";
 
-const journalEntryConverter = {
-  toFirestore: ({ name, text, createdAt }: { name: string, text: string, createdAt: Date }) => {
+const journalEntriesFromDatabase = (data): IJournalEntriesList => {
+  return data.map(entry => {
     return {
-      name,
-      text,
-      createdAt
+      ...entry,
+      createdAt: new Date(entry.createdAt)
     }
-  },
-  fromFirestore: (snapshot: QueryDocumentSnapshot, options: SnapshotOptions): IJournalEntryInfo => {
-    const { name, text, createdAt } = snapshot.data(options)
+  })
+}
 
-    return {
-      id: snapshot.id,
-      name,
-      text,
-      createdAt: createdAt.toDate()
-    }
+const journalEntryFromDatabase = ({ id, name, text, createdAt }): IJournalEntryInfo => {
+  return {
+    id,
+    name,
+    text,
+    createdAt: new Date(createdAt)
   }
 }
 
-const journalEntriesListConverter = {
-  toFirestore: ({ name, createdAt }: { name: string, createdAt: Date }) => {
-    return {
-      name,
-      createdAt
-    }
-  },
-  fromFirestore: (snapshot: QueryDocumentSnapshot, options: SnapshotOptions): IJournalListEntry => {
-    const { name, createdAt } = snapshot.data(options)
-
-    return {
-      id: snapshot.id,
-      name,
-      createdAt: createdAt.toDate()
-    }
+const journalEntryToDatabase = ({ name, text }: IJournalEntryToDatabase) => {
+  return {
+    name,
+    text,
   }
 }
 
 export const getJournalEntries = async (): Promise<IJournalEntriesList> => {
   try {
-    const userUid = auth.currentUser.uid
+    const session = await supabase.auth.getSession()
 
-    const entriesCollection = collection(firestore, 'users', userUid, 'journal-entries-list')
+    if (session.error) throw session.error;
 
-    const q = query(entriesCollection.withConverter(journalEntriesListConverter))
+    const { data, error } = await supabase
+      .from('journal')
+      .select(`id, name, createdAt`)
+      .eq('user_id', session.data.session?.user.id)
 
-    const querySnapshot = await getDocs(q)
+    if (error) throw error;
 
-    const entries: IJournalEntriesList = []
-
-    querySnapshot.forEach(doc => {
-      return {
-        id: doc.id,
-        ...doc.data()
-      }
-    })
-
-    return entries;
+    return journalEntriesFromDatabase(data)
   } catch (e) {
     throw new DatabaseError('Something unexpected happened... Try again later')
   }
@@ -68,20 +48,19 @@ export const getJournalEntries = async (): Promise<IJournalEntriesList> => {
 
 export const getJournalEntryInfo = async (id: string): Promise<IJournalEntryInfo> => {
   try {
-    const userUid = auth.currentUser.uid
+    const session = await supabase.auth.getSession()
 
-    const docRef = doc(firestore, 'users', userUid, 'journal-entries', id)
+    if (session.error) throw session.error;
 
-    const docSnap = await getDoc(docRef.withConverter(journalEntryConverter))
+    const { data, error } = await supabase
+      .from('journal')
+      .select(`id, name, text, createdAt`)
+      .eq('user_id', session.data.session?.user.id)
+      .single()
 
-    if (docSnap.exists()) {
-      return {
-        id: docSnap.id,
-        ...docSnap.data()
-      }
-    }
+    if (error) throw error;
 
-    return null
+    return journalEntryFromDatabase(data)
   } catch (e) {
     throw new DatabaseError('Something unexpected happened... Try again later')
   }
@@ -89,51 +68,55 @@ export const getJournalEntryInfo = async (id: string): Promise<IJournalEntryInfo
 
 export const updateJournalEntry = async (entry: IJournalEntryInfo) => {
   try {
-    const userUid = auth.currentUser.uid
+    const session = await supabase.auth.getSession()
 
-    const journalListRef = doc(firestore, 'users', userUid, 'journal-entries-list', entry.id)
-    const journalEntriesRef = doc(firestore, 'users', userUid, 'journal-entries', entry.id)
+    if (session.error) throw session.error;
 
-    await setDoc(journalListRef.withConverter(journalEntriesListConverter), {
-      name: entry.name,
-      createdAt: entry.createdAt
-    })
+    const { error } = await supabase
+      .from('journal')
+      .update(journalEntryToDatabase(entry))
+      .eq('id', entry.id)
 
-    await setDoc(journalEntriesRef.withConverter(journalEntryConverter), entry)
+    if (error) throw error;
 
   } catch (e) {
     throw new DatabaseError('Something unexpected happened... Try again later')
   }
 }
 
-export const createJournalEntry = async (entry: IJournalEntryInfoToDatabase) => {
+export const createJournalEntry = async (entry: IJournalEntryToDatabase) => {
   try {
-    const userUid = auth.currentUser.uid
+    const session = await supabase.auth.getSession()
 
-    const entriesListRef = collection(firestore, 'users', userUid, 'journal-entries-list')
+    if (session.error) throw session.error;
 
-    const entriesListDoc = await addDoc(entriesListRef.withConverter(journalEntriesListConverter), {
-      name: entry.name,
-      createdAt: entry.createdAt
-    })
+    const { data, error } = await supabase
+      .from('journal')
+      .insert(journalEntryToDatabase(entry))
+      .select()
+      .single()
 
-    const entriesRef = doc(firestore, 'users', userUid, 'journal-entries', entriesListDoc.id)
+    if (error) throw error;
 
-    await setDoc(entriesRef.withConverter(journalEntryConverter), entry)
-
-    return entriesListDoc.id
+    return data.id
   } catch (e) {
     throw new DatabaseError('Something unexpected happened... Try again later')
   }
 }
 
-export const deleteJournalEntry = async (id: string) => {
+export const deleteJournalEntry = async (id: number) => {
   try {
-    const userUid = auth.currentUser.uid
+    const session = await supabase.auth.getSession()
 
-    await deleteDoc(doc(firestore, 'users', userUid, 'journal-entry-list', id))
+    if (session.error) throw session.error;
 
-    await deleteDoc(doc(firestore, 'users', userUid, 'journal-entries', id))
+    const { error } = await supabase
+      .from('journal')
+      .delete()
+      .eq('id', id)
+
+    if (error) throw error;
+
   } catch (e) {
     throw new DatabaseError('Something unexpected happened... Try again later')
   }

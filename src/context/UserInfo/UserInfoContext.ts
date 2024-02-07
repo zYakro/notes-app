@@ -3,10 +3,13 @@ import { createContext } from "react";
 
 export const UserInfoContext = createContext<IUserInfoContext>({
   userInfo: {
-    background: 'light-screen.jpg',
-    theme: 'main-theme',
+    email: '',
     coins: 0,
-    exp: 0
+    exp: 0,
+    preferences: {
+      background: 'light-screen.jpg',
+      theme: 'main-theme',
+    }
   },
-  changeUserInfo: () => {}
+  changeUserPreference: () => { }
 })

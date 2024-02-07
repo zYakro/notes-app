@@ -12,7 +12,7 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <StyledThemeProvider theme={themes[userInfo.theme]}>
+    <StyledThemeProvider theme={themes[userInfo.preferences.theme]}>
       {children}
     </StyledThemeProvider>
   );

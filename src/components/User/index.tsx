@@ -3,7 +3,6 @@ import { PanelContent, ViewContainer, Options } from './styled'
 import { PanelContainer } from '../Shop/styled'
 import { BasicPanel } from '../Panels/BasicPanel'
 import { UserInfo } from './UserInfo'
-import { AnimatedPanelOnFocus } from '../Panels/AnimatedPanelOnFocus'
 import { SectionSeparator } from '../Separators/SectionSeparator'
 import { SafeAreaInsets } from '../SafeAreaInsets'
 import { useShop } from '@/hooks/useShop/useShop'
@@ -16,6 +15,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { AlertsContext } from '@/context/Alerts/AlertsContext'
 import { signOut } from '@/services/auth.service'
 import { useIsTabOpenOnFocus } from '@/hooks/useIsTabOpenOnFocus/useIsTabOpenOnPage'
+import { AnimatedPanel } from '../Panels/AnimatedPanel'
 
 export const User = () => {
   const {
@@ -66,7 +66,7 @@ export const User = () => {
     <SafeAreaInsets>
       <ViewContainer>
         <PanelContainer>
-          <AnimatedPanelOnFocus>
+          <AnimatedPanel>
             <BasicPanel>
               <PanelContent>
                 <SectionSeparator />
@@ -91,7 +91,7 @@ export const User = () => {
                 </Options>
               </PanelContent>
             </BasicPanel>
-          </AnimatedPanelOnFocus>
+          </AnimatedPanel>
         </PanelContainer>
       </ViewContainer>
     </SafeAreaInsets>

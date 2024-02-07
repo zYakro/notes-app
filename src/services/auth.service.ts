@@ -51,9 +51,9 @@ export const singIn = async (email: string, password: string) => {
   }
 
   try {
-    const { error} = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
 
-    if(error) throw error
+    if (error) throw error
   } catch (err) {
     const { code } = err
 
@@ -63,6 +63,16 @@ export const singIn = async (email: string, password: string) => {
   }
 }
 
-export const isUserAuthenticated = (onChange: any) => {
+export const signOut = async () => {
+  try {
+    const { error } = await supabase.auth.signOut()
 
+    if (error) throw error;
+  } catch (err) {
+    const { code } = err
+
+    ValidationError.throwValidationError(code)
+
+    throw new DatabaseError('Something unexpected happened... Try again later')
+  }
 }

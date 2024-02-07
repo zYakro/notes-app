@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { PanelContent, ViewContainer, Options } from './styled'
 import { PanelContainer } from '../Shop/styled'
 import { BasicPanel } from '../Panels/BasicPanel'
@@ -7,10 +7,14 @@ import { AnimatedPanelOnFocus } from '../Panels/AnimatedPanelOnFocus'
 import { SectionSeparator } from '../Separators/SectionSeparator'
 import { SafeAreaInsets } from '../SafeAreaInsets'
 import { useShop } from '@/hooks/useShop/useShop'
-import { IShopItem } from '@/types/types'
+import { IShopItem, Routes } from '@/types/types'
 import { ShopItemInfo } from '../Shop/ShopItemInfo'
 import { ShopItems } from '../Shop/ShopItems'
 import { BasicSubmitButton } from '../Inputs/BasicSubmitButton'
+import { useNavigation } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
+import { AlertsContext } from '@/context/Alerts/AlertsContext'
+import { signOut } from '@/services/auth.service'
 
 export const User = () => {
   const {
@@ -20,6 +24,10 @@ export const User = () => {
     onCurrentItemSelected,
     shopItems,
   } = useShop()
+
+  const navigation = useNavigation<StackNavigationProp<Routes>>()
+
+  const { setAlert } = useContext(AlertsContext)
 
   const [isInfoModalVisible, setIsInfoModalVisible] = useState(false)
 
@@ -32,8 +40,17 @@ export const User = () => {
     setIsInfoModalVisible(false)
   }
 
-  const onLogout = () => {
+  const onSignOut = async () => {
+    try {
+      await signOut()
 
+      navigation.navigate('Auth')
+    } catch (e) {
+      setAlert({
+        title: 'Error',
+        message: e.message
+      })
+    }
   }
 
   const inventoryItems = shopItems.filter(item => inventory.includes(item.name))
@@ -63,7 +80,7 @@ export const User = () => {
                   />
                 }
                 <Options>
-                  <BasicSubmitButton title='Log out' onPress={onLogout}/>
+                  <BasicSubmitButton title='Sign out' onPress={onSignOut} />
                 </Options>
               </PanelContent>
             </BasicPanel>

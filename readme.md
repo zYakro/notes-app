@@ -41,7 +41,7 @@ TODO:
 - [X] Create the shop view
 - [X] User info view
 - [X] Finish user info fields in context
-- [ ] Add exp on finished habit & update level based on exp
+- [X] Add exp on finished habit & update level based on exp
 - [ ] Add panels with user info
 - [X] Add more shop items, themes, panels and wallpapers
 - [ ] Integrate Supabase errors with errors service

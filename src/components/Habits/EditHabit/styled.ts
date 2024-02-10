@@ -55,3 +55,31 @@ export const OptionsBar = styled(View)`
 export const OptionBarText = styled(Text)`
   color: ${({ theme }) => theme.text.color};
 `
+
+export const CoinsContainer = styled(View)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 15px;
+`
+
+export const CoinsPanel = styled(View)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-left-width: 2px;
+  border-right-width: 2px;
+  border-color: ${({ theme }) => theme.onBackgroundColor};
+  flex-direction: row;
+  gap: 3px;
+`
+
+export const Stat = styled(Text)`
+  color: ${({ theme }) => theme.text.color};
+  display: flex;
+  gap: 5px;
+  opacity: 0.9;
+`

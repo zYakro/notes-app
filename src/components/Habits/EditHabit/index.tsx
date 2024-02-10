@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { HabitsPanel } from '../HabitsPanel'
 import { Goals } from '../Goals'
-import { ViewContainer } from './styled'
+import { CoinsContainer, CoinsPanel, Stat, ViewContainer } from './styled'
 import { PanelTopOptions, PanelTopOption } from '../../Panels/PanelTopOptions'
 import { BasicTextInput } from '../../Inputs/BasicTextInput'
 import { Difficulty } from '../Difficulty'
@@ -15,10 +15,15 @@ import { StackNavigationProp } from '@react-navigation/stack/lib/typescript/src/
 import { useUnsavedChangesAlert } from '@/hooks/useUnsavedChangesAlert/useUnsavedChangesAlert'
 import { PROGRESS_INCREMENT } from '@/constant/habitConsts'
 import { useIsTabOpenOnFocus } from '@/hooks/useIsTabOpenOnFocus/useIsTabOpenOnPage'
+import { AnimatedPanel } from '@/components/Panels/AnimatedPanel'
+import { CoinIcon } from '@/components/Icons/CoinIcon'
+import { ExpIcon } from '@/components/Icons/ExpIcon'
+import { getExpByProgress } from '@/utils/shop/getExpByProgress'
+import { getCoinsByProgress } from '@/utils/shop/getCoinsByProgress'
 
 type EditHabit = {
   habit: IHabitInfo | undefined
-  updateHabit: ({}: IHabitInfo) => Promise<boolean>
+  updateHabit: ({ }: IHabitInfo) => Promise<boolean>
   deleteHabit: () => Promise<void>
 }
 
@@ -34,7 +39,7 @@ export const EditHabit = ({ habit, updateHabit, deleteHabit }: EditHabit) => {
   const [progress, setProgress] = useState(habit.progress)
   const [goals, setGoals] = useState(habit.goals)
 
-  let hasUnsavedChanges = (name != habit.name || motivation != habit.motivation || difficulty != habit.difficulty || progress != habit.progress || goals.length != habit.goals.length)
+  const hasUnsavedChanges = (name != habit.name || motivation != habit.motivation || difficulty != habit.difficulty || progress != habit.progress || goals.length != habit.goals.length)
 
   useUnsavedChangesAlert(hasUnsavedChanges)
 
@@ -49,12 +54,12 @@ export const EditHabit = ({ habit, updateHabit, deleteHabit }: EditHabit) => {
       id: habit.id,
       name,
       motivation,
-      difficulty, 
+      difficulty,
       progress,
       goals,
     })
 
-    if(success)
+    if (success)
       return navigation.navigate('HabitList')
 
     setIsTabOpen(true)
@@ -71,7 +76,7 @@ export const EditHabit = ({ habit, updateHabit, deleteHabit }: EditHabit) => {
 
         navigation.navigate('HabitList')
       },
-      onNo: () => {}
+      onNo: () => { }
     })
   }
 
@@ -99,6 +104,23 @@ export const EditHabit = ({ habit, updateHabit, deleteHabit }: EditHabit) => {
             <HabitProgress progress={progress} />
           </ProgressContainer>
           <Difficulty startingDifficulty={difficulty} onChangeDifficulty={setDifficulty} />
+          {
+            (progress != habit.progress) &&
+            <CoinsContainer>
+              <AnimatedPanel isTabOpen={progress != habit.progress}>
+                <CoinsPanel>
+                  <Stat>
+                    +{getCoinsByProgress(progress - habit.progress, difficulty)}
+                    <CoinIcon size={14} />
+                  </Stat>
+                  <Stat>
+                    +{getExpByProgress(progress - habit.progress, difficulty)}
+                    <ExpIcon size={14} />
+                  </Stat>
+                </CoinsPanel>
+              </AnimatedPanel>
+            </CoinsContainer>
+          }
           <ButtonContainer>
             <BasicSubmitButton
               title="Complete"

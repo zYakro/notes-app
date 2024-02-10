@@ -52,7 +52,6 @@ export const EditHabit = ({ habit, updateHabit, deleteHabit }: EditHabit) => {
       difficulty, 
       progress,
       goals,
-      createdAt: habit.createdAt
     })
 
     if(success)

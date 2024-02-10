@@ -10,7 +10,7 @@ import { LoadingIndicator } from '@/components/ActivityIndicators/LoadingIndicat
 
 type IHabitListParams = {
   habits: IHabitList
-  getHabitInfo: (id: string) => Promise<void>
+  getHabitInfo: (id: number) => Promise<void>
   isListLoaded: boolean
 }
 
@@ -19,7 +19,7 @@ export const HabitList = ({ habits, getHabitInfo, isListLoaded }: IHabitListPara
 
   const [isTabOpen, setIsTabOpen] = useIsTabOpenOnFocus(true)
 
-  const onEditHabit = async (id: string) => {
+  const onEditHabit = async (id: number) => {
     setIsTabOpen(false)
 
     await getHabitInfo(id)

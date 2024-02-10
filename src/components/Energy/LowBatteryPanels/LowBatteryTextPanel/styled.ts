@@ -1,8 +1,9 @@
 import styled from "styled-components"
 import { FadeInOutLoop } from "../../../Animations/FadeInOutLoop"
 import { Entypo } from '@expo/vector-icons';
+import { Text, View } from "react-native";
 
-export const Container = styled.View`
+export const Container = styled(View)`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -27,7 +28,7 @@ export const WarningIcon = styled(Entypo).attrs(({ theme }) => ({
   size: 20
 }))``;
 
-export const WarningText = styled.Text`
+export const WarningText = styled(Text)`
   font-weight: bold;
   font-size: 18px;
   color: ${({ theme }) => theme.text.color}

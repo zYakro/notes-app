@@ -73,7 +73,7 @@ export const getHabitList = async () => {
   }
 }
 
-export const getHabitInfo = async (id: string): Promise<IHabitInfo> => {
+export const getHabitInfo = async (id: number): Promise<IHabitInfo> => {
   try {
     const session = await supabase.auth.getSession()
 

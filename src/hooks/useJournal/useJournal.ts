@@ -39,7 +39,7 @@ export const useJournal = () => {
     }
   }
 
-  const getEntryInfo = async (id: string): Promise<boolean> => {
+  const getEntryInfo = async (id: number): Promise<boolean> => {
     try {
       const info = await getJournalEntryInfo(id)
 

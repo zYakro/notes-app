@@ -32,7 +32,7 @@ export const getShopItems = async (from: number, to: number, type: ShopItemType)
 
     if (error) throw error;
 
-    return data;
+    return data as IShopItems;
   } catch (e) {
     throw new DatabaseError('Something unexpected happened... Try again later')
   }
@@ -52,7 +52,7 @@ export const getInventoryItems = async (): Promise<IShopItems> => {
       return inventory.includes(name)
     })    
 
-    return items;
+    return items as IShopItems;
   } catch (e) {
     console.log(e)
     throw new DatabaseError('Something unexpected happened... Try again later')

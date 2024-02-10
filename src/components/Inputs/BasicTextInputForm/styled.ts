@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { TypingText } from "../../TypingText";
+import { View } from "react-native";
 
-export const ErrorTextContainer = styled.View`
+export const ErrorTextContainer = styled(View)`
   width: 100%;
   height: auto;
   display: flex;

@@ -46,7 +46,7 @@ export const getJournalEntries = async (): Promise<IJournalEntriesList> => {
   }
 }
 
-export const getJournalEntryInfo = async (id: string): Promise<IJournalEntryInfo> => {
+export const getJournalEntryInfo = async (id: number): Promise<IJournalEntryInfo> => {
   try {
     const session = await supabase.auth.getSession()
 

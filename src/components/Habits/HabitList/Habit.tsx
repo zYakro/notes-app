@@ -3,10 +3,10 @@ import { HabitContainer, HabitName, TouchableContainer } from './styled'
 import { HabitProgress } from '../HabitProgress'
 
 type IHabit = {
-  id: string
+  id: number
   name: string
   progress: number
-  onPress: (id: string) => void
+  onPress: (id: number) => void
 }
 
 export const Habit = ({ id, name, progress, onPress }: IHabit) => {

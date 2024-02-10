@@ -48,7 +48,7 @@ export const useHabits = () => {
     }
   }
 
-  const getHabitInfo = async (id: string) => {
+  const getHabitInfo = async (id: number) => {
     try {
       const habitInfo = await getHabitInfoFromFirestore(id)
 

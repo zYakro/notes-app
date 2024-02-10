@@ -13,7 +13,7 @@ import { LoadingIndicator } from '@/components/ActivityIndicators/LoadingIndicat
 
 type IEntriesList = {
   entries: IJournalEntriesList,
-  getEntryInfo: (id: string) => Promise<boolean>
+  getEntryInfo: (id: number) => Promise<boolean>
   isListLoaded: boolean
 }
 
@@ -23,7 +23,7 @@ export const EntriesList = ({ entries, getEntryInfo, isListLoaded }: IEntriesLis
   const [isTabOpen, setIsTabOpen] = useIsTabOpenOnFocus(true)
   const [searchValue, setSearchValue] = useState('')
 
-  const openJournalEditor = async (id: string) => {
+  const openJournalEditor = async (id: number) => {
     setIsTabOpen(false)
 
     const success = await getEntryInfo(id)

@@ -15,7 +15,6 @@ export const Shop = () => {
     currentItem,
     changeCurrentItem,
     onCurrentItemSelected,
-    shopItems,
   } = useShop()
 
   const [isInfoModalVisible, setIsInfoModalVisible] = useState(false)
@@ -38,7 +37,7 @@ export const Shop = () => {
               <SectionSeparator />
               <UserInfo />
               <SectionSeparator />
-              <ShopItems shopItems={shopItems} inventory={inventory} onItemSelected={showItemInfo}/>
+              <ShopItems inventory={inventory} onItemSelected={showItemInfo}/>
               {
                 isInfoModalVisible &&
                 <ShopItemInfo 

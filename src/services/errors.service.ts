@@ -46,3 +46,10 @@ export class DatabaseError extends Error {
     this.name = "DatabaseError"
   }
 }
+
+export class ShopError extends Error {
+  constructor(message: string){
+    super(message)
+    this.name = "ShopError"
+  }
+}

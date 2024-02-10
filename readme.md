@@ -3,7 +3,7 @@ it migrated to Typescript, Suprabase, and added component testing (Soon).
 
 Technologies used:
 
-- Firebase, Firestore & Authentication
+- Supabase
 - React Native with Expo
 - Styled components
 - Typescript
@@ -14,6 +14,7 @@ Things learned so far:
 - Don't use magic strings, instead use constants
 - Firestore and Authentication with Firebase & Firebase Security Rules
 - Supabase authentication, database and PostgreSQL & Row Security Policies  
+- Custom plpgsql functions in Supabase
 - The use of multiple navigations in the app
 - Error handling using classes
 - React context, custom hooks, react navigation

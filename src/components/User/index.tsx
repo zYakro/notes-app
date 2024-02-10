@@ -8,7 +8,6 @@ import { SafeAreaInsets } from '../SafeAreaInsets'
 import { useShop } from '@/hooks/useShop/useShop'
 import { IShopItem, Routes } from '@/types/types'
 import { ShopItemInfo } from '../Shop/ShopItemInfo'
-import { ShopItems } from '../Shop/ShopItems'
 import { BasicSubmitButton } from '../Inputs/BasicSubmitButton'
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
@@ -16,6 +15,7 @@ import { AlertsContext } from '@/context/Alerts/AlertsContext'
 import { signOut } from '@/services/auth.service'
 import { useIsTabOpenOnFocus } from '@/hooks/useIsTabOpenOnFocus/useIsTabOpenOnPage'
 import { AnimatedPanel } from '../Panels/AnimatedPanel'
+import { Inventory } from '../Shop/Inventory'
 
 export const User = () => {
   const {
@@ -23,7 +23,6 @@ export const User = () => {
     currentItem,
     changeCurrentItem,
     onCurrentItemSelected,
-    shopItems,
   } = useShop()
 
   const navigation = useNavigation<StackNavigationProp<Routes>>()
@@ -60,20 +59,17 @@ export const User = () => {
     setIsTabOpen(true)
   }
 
-  const inventoryItems = shopItems.filter(item => inventory.includes(item.name))
-
   return (
     <SafeAreaInsets>
       <ViewContainer>
         <PanelContainer>
-          <AnimatedPanel>
+          <AnimatedPanel isTabOpen={isTabOpen}>
             <BasicPanel>
               <PanelContent>
                 <SectionSeparator />
                 <UserInfo />
                 <SectionSeparator />
-                <ShopItems
-                  shopItems={inventoryItems}
+                <Inventory
                   inventory={inventory}
                   onItemSelected={showItemInfo}
                 />

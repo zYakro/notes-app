@@ -1,7 +1,8 @@
 import { SHOP_ITEM_TYPE_BACKGROUND, SHOP_ITEM_TYPE_THEME } from '@/constant/shopConsts'
 import { AlertsContext } from '@/context/Alerts/AlertsContext'
 import { UserInfoContext } from '@/context/UserInfo/UserInfoContext'
-import { getInventory } from '@/services/shop.service'
+import { ShopError } from '@/services/errors.service'
+import { buyItem, getInventory } from '@/services/shop.service'
 import { IShopInventory, IShopItem, IShopItems, ShopItemType } from '@/types/types'
 import React, { useContext, useEffect, useState } from 'react'
 
@@ -10,68 +11,7 @@ export const useShop = () => {
   const { userInfo, changeUserPreference } = useContext(UserInfoContext)
 
   const [currentItem, setCurrentItem] = useState<IShopItem>()
-  const [inventory, setInventory] = useState<IShopInventory>(['main-theme', 'night-background', 'light-screen'])
-  const [shopItems, setShopItems] = useState<IShopItems>([
-    {
-      name: "main-theme",
-      title: "Main Theme",
-      description: 'A simple and elegant theme',
-      price: 100,
-      type: 'theme',
-      itemProps: {
-        panelColor: '#4C4940',
-        panelContentColor: '#d0ccb3F2',
-        titleFontColor: '#d0ccb3',
-        fontColor: '#4C4940'
-      }
-    },
-    {
-      title: 'Aono',
-      name: "aono",
-      description: 'Aono',
-      price: 100,
-      type: 'theme',
-      itemProps: {
-        panelColor: '#FF8552F2',
-        panelContentColor: '#E6E6E6',
-        fontColor: '#fff',
-        titleFontColor: '#fff'
-      }
-    },
-    {
-      title: 'Blush',
-      name: "blush",
-      description: 'A pink-based theme',
-      price: 100,
-      type: 'theme',
-      itemProps: {
-        panelColor: '#DE4D86F0',
-        panelContentColor: '#F7CACD',
-        fontColor: '#fff',
-        titleFontColor: '#fff'
-      }
-    },
-    {
-      title: 'Night background',
-      name: "night-background",
-      description: "Aasda",
-      price: 150,
-      type: 'background',
-      itemProps: {
-        image: require('@/assets/night-screen.jpg')
-      }
-    },
-    {
-      title: 'Light background',
-      name: "light-screen",
-      description: "Aasda",
-      price: 150,
-      type: 'background',
-      itemProps: {
-        image: require('@/assets/light-screen.jpg')
-      }
-    }
-  ])
+  const [inventory, setInventory] = useState<IShopInventory>([])
 
   const changeCurrentItem = ({ title, name, type, description, price, itemProps }: IShopItem) => {
     setCurrentItem({
@@ -86,7 +26,11 @@ export const useShop = () => {
 
   const buyCurrentItem = async () => {
     try {
-      // Api call
+      if(userInfo.coins < currentItem.price){
+        throw new ShopError('Not enough coins')
+      }
+
+      await buyItem(currentItem.name);
 
       selectItem(currentItem.name, currentItem.type)
 
@@ -96,7 +40,10 @@ export const useShop = () => {
       ])
 
     } catch (e) {
-
+      setAlert({
+        title: 'Error',
+        message: e.message
+      })
     }
   }
 
@@ -133,7 +80,6 @@ export const useShop = () => {
   return {
     inventory,
     currentItem,
-    shopItems,
     changeCurrentItem,
     onCurrentItemSelected
   }

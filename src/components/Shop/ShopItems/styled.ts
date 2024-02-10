@@ -10,7 +10,7 @@ export const ShopItemsContainer = styled(View)`
   gap: 5px;
 `
 
-export const ShopItemsSection = styled(View)`
+export const ItemsSection = styled(View)`
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -18,10 +18,17 @@ export const ShopItemsSection = styled(View)`
 `
 
 export const ShopSectionTitle = styled(Text)`
-  width: 100%;
   padding: 5px 2px;
   font-size: 16px;
-  color: ${({ theme }) => theme.text.color}
+  color: ${({ theme }) => theme.text.color};
+`
+
+export const SectionTitlesContainer = styled(View)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 15px;
 `
 
 export const ShopItemContainer = styled(TouchableOpacity)`

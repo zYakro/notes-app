@@ -2,20 +2,52 @@ import { Price, ShopItemContainer, ShopItemImageContainer, ShopItemPrice } from 
 import { CoinIcon } from '@/components/Icons/CoinIcon'
 import { CenterDotSeparator } from '@/components/Separators/CenterDotSeparator'
 import { IShopItemImageProps, ShopItemType } from '@/types/types'
-import { ShopItemImage } from './ShopItemImage'
+import { Image } from 'react-native'
+import { ImageContainer, ThemePanel, ThemePanelContainer } from './styled'
+import { SHOP_IMAGES, SHOP_ITEM_TYPE_BACKGROUND, SHOP_ITEM_TYPE_THEME } from '@/constant/shopConsts'
+
+type IThemeShopItem = {
+  type: ShopItemType
+  itemProps: IShopItemImageProps
+}
 
 type IShopItem = {
-  name: string
   price: number
   type: ShopItemType
   itemProps: IShopItemImageProps
   isOwned: boolean
-  onPress: (name: string) => void
+  onPress: () => void
 }
 
-export const ShopItem = ({ name, itemProps, price, isOwned, type, onPress }: IShopItem) => {
+export const ShopItemImage = ({ itemProps, type }: IThemeShopItem) => {
   return (
-    <ShopItemContainer onPress={() => onPress(name)}>
+    <>
+      {
+        type == SHOP_ITEM_TYPE_THEME &&
+        <ThemePanelContainer backgroundColor={itemProps.panelColor}>
+          <ThemePanel backgroundColor={itemProps.panelContentColor} />
+        </ThemePanelContainer>
+      }
+      {
+        type == SHOP_ITEM_TYPE_BACKGROUND &&
+        <ImageContainer>
+          <Image
+            style={{
+              width: '100%',
+              height: '100%',
+              resizeMode: 'cover'
+            }}
+            source={SHOP_IMAGES[itemProps.image]}
+          />
+        </ImageContainer>
+      }
+    </>
+  )
+}
+
+export const ShopItem = ({ itemProps, price, isOwned, type, onPress }: IShopItem) => {
+  return (
+    <ShopItemContainer onPress={onPress}>
       <ShopItemImageContainer>
         <ShopItemImage itemProps={itemProps} type={type} />
       </ShopItemImageContainer>
@@ -30,4 +62,5 @@ export const ShopItem = ({ name, itemProps, price, isOwned, type, onPress }: ISh
     </ShopItemContainer>
   )
 }
+
 

@@ -95,6 +95,7 @@ export const getHabitInfo = async (id: number): Promise<IHabitInfo> => {
 
 export const updateHabit = async (habit: IHabitInfo) => {
   try {
+  console.log(habit)
     const session = await supabase.auth.getSession()
 
     if (session.error) throw session.error;
@@ -107,8 +108,7 @@ export const updateHabit = async (habit: IHabitInfo) => {
     if (error) throw error;
 
   } catch (e) {
-
-    console.log(habit)
+    console.log(e)
     throw new DatabaseError('Something unexpected happened... Try again later')
   }
 }

@@ -160,6 +160,8 @@ export type IUserPreferences = {
 export type IUserInfoContext = {
   userInfo: IUserInfo
   changeUserPreference: (key: IUserPreferencesKey, value: string) => void
+  setCoins: (coins: number) => void,
+  setExp: (exp: number) => void
 }
 
 export type IUserPreferencesKey = keyof UserPreferences

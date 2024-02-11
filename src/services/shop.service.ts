@@ -1,6 +1,6 @@
 import { supabase } from "@/supabase/config";
 import { IShopInventory, IShopItem, IShopItems, InventoryType, ShopItemType } from "@/types/types";
-import { DatabaseError } from "./errors.service";
+import { DatabaseError, ShopError } from "./errors.service";
 
 export const getInventory = async (): Promise<InventoryType> => {
   try {
@@ -54,7 +54,6 @@ export const getInventoryItems = async (): Promise<IShopItems> => {
 
     return items as IShopItems;
   } catch (e) {
-    console.log(e)
     throw new DatabaseError('Something unexpected happened... Try again later')
   }
 }
@@ -62,12 +61,14 @@ export const getInventoryItems = async (): Promise<IShopItems> => {
 export const buyItem = async (name: string): Promise<void> => {
   try {
     const { error } = await supabase
-      .rpc('buy_item', { name: name });
+      .rpc('buy_item', { name });
 
     if (error) throw error;
   } catch (e) {
-    
-    console.log(e)
+    if(e.message == 'Not enough coins'){
+      throw new ShopError('Not enough coins')
+    }
+
     throw new DatabaseError('Something unexpected happened... Try again later')
   }
 }

@@ -20,7 +20,7 @@ export const signUp = async (email: string, password: string, confirmation: stri
     if (error) throw error;
 
     const request = await supabase
-      .from('users')
+      .from('users-info')
       .insert({
         email: email,
         coins: 0,

@@ -8,6 +8,9 @@ import {
 } from "../../services/habits.service"
 import { HabitDifficulty, IGoals, IHabitInfo, IHabitList } from "@/types/types"
 import { AlertsContext } from "@/context/Alerts/AlertsContext"
+import { UserInfoContext } from "@/context/UserInfo/UserInfoContext"
+import { getCoinsByProgress } from "@/utils/shop/getCoinsByProgress"
+import { getExpByProgress } from "@/utils/shop/getExpByProgress"
 
 type ICreateHabit = {
   name: string
@@ -19,6 +22,7 @@ type ICreateHabit = {
 }
 
 export const useHabits = () => {
+  const { userInfo, setCoins, setExp} = useContext(UserInfoContext)
   const { setAlert } = useContext(AlertsContext)
 
   const [isListLoaded, setIsListLoaded] = useState(false)
@@ -87,6 +91,9 @@ export const useHabits = () => {
         }
         return item;
       }))
+
+      setCoins(userInfo.coins + getCoinsByProgress(progress - currentHabitInfo.progress, difficulty))
+      setExp(userInfo.exp + getExpByProgress(progress - currentHabitInfo.progress, difficulty))
 
       return true;
     } catch (err) {

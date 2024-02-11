@@ -8,7 +8,7 @@ import React, { useContext, useEffect, useState } from 'react'
 
 export const useShop = () => {
   const { setAlert } = useContext(AlertsContext)
-  const { userInfo, changeUserPreference } = useContext(UserInfoContext)
+  const { userInfo, changeUserPreference, setCoins } = useContext(UserInfoContext)
 
   const [currentItem, setCurrentItem] = useState<IShopItem>()
   const [inventory, setInventory] = useState<IShopInventory>([])
@@ -26,7 +26,7 @@ export const useShop = () => {
 
   const buyCurrentItem = async () => {
     try {
-      if(userInfo.coins < currentItem.price){
+      if (userInfo.coins < currentItem.price) {
         throw new ShopError('Not enough coins')
       }
 
@@ -38,6 +38,8 @@ export const useShop = () => {
         ...inventory,
         currentItem.name
       ])
+
+      setCoins(userInfo.coins - currentItem.price)
 
     } catch (e) {
       setAlert({
@@ -61,11 +63,11 @@ export const useShop = () => {
   }
 
   const getUserInventory = async () => {
-    try{
+    try {
       const inventory = await getInventory();
 
       setInventory(inventory)
-    }catch(e){
+    } catch (e) {
       setAlert({
         title: 'Error',
         message: e.message

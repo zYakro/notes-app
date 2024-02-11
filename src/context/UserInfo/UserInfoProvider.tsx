@@ -52,6 +52,20 @@ export const UserInfoProvider = ({ children }: { children: React.ReactNode }) =>
     }
   }
 
+  const setCoins = (coins: number) => {
+    setUserInfo({
+      ...userInfo,
+      coins: coins
+    })
+  }
+
+  const setExp = (exp: number) => {
+    setUserInfo({
+      ...userInfo,
+      exp: exp
+    })
+  }
+
   useEffect(() => {
     supabase.auth.onAuthStateChange((event) => {
       if (event == 'SIGNED_IN' || event == 'INITIAL_SESSION') {
@@ -61,7 +75,7 @@ export const UserInfoProvider = ({ children }: { children: React.ReactNode }) =>
   }, [])
 
   return (
-    <UserInfoContext.Provider value={{ userInfo, changeUserPreference }}>
+    <UserInfoContext.Provider value={{ userInfo, changeUserPreference, setExp, setCoins }}>
       {children}
     </UserInfoContext.Provider>
   )

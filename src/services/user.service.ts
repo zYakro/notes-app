@@ -13,7 +13,7 @@ export const getUserInfo = async () => {
     if (session.error) throw session.error;
 
     const { data, error } = await supabase
-      .from('users')
+      .from('users-info')
       .select(`email, coins, exp, preferences`)
       .eq('user_id', session.data.session?.user.id)
       .single()
@@ -33,7 +33,7 @@ export const updateUserInfo = async (info: IUserInfo) => {
     if (session.error) throw session.error;
 
     const { error } = await supabase
-      .from('users')
+      .from('users-info')
       .update(info)
       .eq('user_id', session.data.session?.user.id)
 

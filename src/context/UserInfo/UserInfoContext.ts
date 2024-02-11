@@ -11,5 +11,7 @@ export const UserInfoContext = createContext<IUserInfoContext>({
       theme: 'main-theme',
     }
   },
-  changeUserPreference: () => { }
+  changeUserPreference: () => { },
+  setExp: () => { },
+  setCoins: () => { }
 })

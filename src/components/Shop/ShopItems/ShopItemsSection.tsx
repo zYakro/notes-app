@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
-import { ItemsSection, ShopItemsContainer } from './styled'
+import { IsLoadingContainer, ItemsSection, ShopItemsContainer } from './styled'
 import { IShopInventory, IShopItem, ShopItemType } from '@/types/types'
 import { useShopItems } from '@/hooks/useShop/useShopItems'
 import { ScrollView } from 'react-native-gesture-handler'
 import { ShopItem } from './ShopItem'
+import { LoadingIndicator } from '@/components/ActivityIndicators/LoadingIndicator'
 
 type IShopItemsSection = {
   type: ShopItemType
@@ -12,7 +13,11 @@ type IShopItemsSection = {
 }
 
 export const ShopItemsSection = ({ type, inventory, onItemSelected }: IShopItemsSection) => {
-  const { shopItems, getShopItems } = useShopItems(type)
+  const {
+    shopItems,
+    isLoading,
+    getShopItems,
+  } = useShopItems(type)
 
   useEffect(() => {
     getShopItems(0, 10)
@@ -20,24 +25,29 @@ export const ShopItemsSection = ({ type, inventory, onItemSelected }: IShopItems
 
   return (
     <ScrollView>
-      <ItemsSection>
-        <ShopItemsContainer>
-          {
-            shopItems.map(item => {
-              return (
-                <ShopItem
-                  key={item.name}
-                  price={item.price}
-                  onPress={() => { onItemSelected(item) }}
-                  itemProps={item.itemProps}
-                  type={item.type}
-                  isOwned={inventory.includes(item.name)}
-                />
-              )
-            })
-          }
-        </ShopItemsContainer>
-      </ItemsSection>
+      <ShopItemsContainer>
+        {
+          shopItems.map(item => {
+            return (
+              <ShopItem
+                key={item.name}
+                price={item.price}
+                onPress={() => { onItemSelected(item) }}
+                itemProps={item.itemProps}
+                type={item.type}
+                isOwned={inventory.includes(item.name)}
+              />
+            )
+          })
+        }
+
+      </ShopItemsContainer>
+      {
+        isLoading &&
+        <IsLoadingContainer>
+          <LoadingIndicator animated={true} size={50} />
+        </IsLoadingContainer>
+      }
     </ScrollView>
   )
 }

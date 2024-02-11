@@ -2,9 +2,8 @@ import React, { useState } from 'react'
 import { ItemsSection, SectionTitlesContainer, ShopSectionTitle } from './styled'
 import { IShopInventory, IShopItem, IShopItems } from '@/types/types'
 import { ScrollView } from 'react-native'
-import { ShopItem } from './ShopItem'
-import { groupBy } from '@/utils/groupBy'
 import { ShopItemsSection } from './ShopItemsSection'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 type IShopItemsProps = {
   inventory: IShopInventory
@@ -17,24 +16,28 @@ export const ShopItems = ({ inventory, onItemSelected }: IShopItemsProps) => {
   return (
     <ScrollView>
       <SectionTitlesContainer>
-        <ShopSectionTitle>Themes</ShopSectionTitle>
-        <ShopSectionTitle>Background</ShopSectionTitle>
-        <ShopSectionTitle>Panels</ShopSectionTitle>
+        <TouchableOpacity onPress={() => setCurrentSection('theme')}>
+          <ShopSectionTitle>Themes</ShopSectionTitle>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setCurrentSection('background')}>
+          <ShopSectionTitle>Background</ShopSectionTitle>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setCurrentSection('panel')}>
+          <ShopSectionTitle>Panels</ShopSectionTitle>
+        </TouchableOpacity>
       </SectionTitlesContainer>
-      <ItemsSection>
-        {
-          currentSection == 'theme' &&
-          <ShopItemsSection type="theme" inventory={inventory} onItemSelected={onItemSelected} />
-        }
-        {
-          currentSection == 'panel' &&
-          <ShopItemsSection type="panel" inventory={inventory} onItemSelected={onItemSelected} />
-        }
-        {
-          currentSection == 'background' &&
-          <ShopItemsSection type="background" inventory={inventory} onItemSelected={onItemSelected} />
-        }
-      </ItemsSection>
+      {
+        currentSection == 'theme' &&
+        <ShopItemsSection type="theme" inventory={inventory} onItemSelected={onItemSelected} />
+      }
+      {
+        currentSection == 'panel' &&
+        <ShopItemsSection type="panel" inventory={inventory} onItemSelected={onItemSelected} />
+      }
+      {
+        currentSection == 'background' &&
+        <ShopItemsSection type="background" inventory={inventory} onItemSelected={onItemSelected} />
+      }
     </ScrollView >
   )
 }

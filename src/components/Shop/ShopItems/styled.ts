@@ -5,7 +5,6 @@ import styled from "styled-components";
 export const ShopItemsContainer = styled(View)`
   display: flex;
   flex-wrap: wrap;
-  box-sizing: border-box;
   flex-direction: row;
   gap: 5px;
 `
@@ -92,4 +91,12 @@ export const ImageContainer = styled(View)`
   display: flex;
   align-items: center;
   justify-content: center;
+`
+
+export const IsLoadingContainer = styled(View)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 100%;
+  min-height: 200px;
 `

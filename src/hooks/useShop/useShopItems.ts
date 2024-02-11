@@ -7,12 +7,17 @@ export const useShopItems = (type: ShopItemType) => {
   const { setAlert } = useContext(AlertsContext)
 
   const [shopItems, setShopItems] = useState<IShopItems>([])
+  const [isLoading, setIsLoading] = useState(true)
 
   const getShopItems = async (from: number, to: number) => {
     try{
+      setIsLoading(true)
+
       const items = await getShopItemsFromDB(from, to, type)
 
       setShopItems(items)
+
+      setIsLoading(false)
     }catch(e){
       setAlert({
         title: 'Error',
@@ -23,6 +28,7 @@ export const useShopItems = (type: ShopItemType) => {
 
   return {
     shopItems,
+    isLoading,
     getShopItems
   }
 }

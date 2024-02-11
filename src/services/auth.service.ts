@@ -1,5 +1,6 @@
 import { supabase } from "@/supabase/config";
 import { DatabaseError, ValidationError } from "./errors.service";
+import { isAuthError } from "@supabase/supabase-js";
 
 export const signUp = async (email: string, password: string, confirmation: string) => {
   if (!email) {
@@ -15,7 +16,7 @@ export const signUp = async (email: string, password: string, confirmation: stri
   }
 
   try {
-    const { data, error } = await supabase.auth.signUp({ email, password })
+    const { error } = await supabase.auth.signUp({ email, password })
 
     if (error) throw error;
 
@@ -23,19 +24,15 @@ export const signUp = async (email: string, password: string, confirmation: stri
       .from('users-info')
       .insert({
         email: email,
-        coins: 0,
-        exp: 0,
-        preferences: {
-          background: 'light-screen',
-          theme: 'main-theme'
-        }
       })
 
     if (request.error) throw error;
-  } catch (err) {
-    const { code } = err
 
-    ValidationError.throwValidationError(code)
+  } catch (err) {
+
+    if (isAuthError(err)) {
+      throw new ValidationError(err.message)
+    }
 
     throw new DatabaseError('Something unexpected happened... Try again later')
   }
@@ -55,9 +52,9 @@ export const singIn = async (email: string, password: string) => {
 
     if (error) throw error
   } catch (err) {
-    const { code } = err
-
-    ValidationError.throwValidationError(code)
+    if (isAuthError(err)) {
+      throw new ValidationError(err.message)
+    }
 
     throw new DatabaseError('Something unexpected happened... Try again later')
   }
@@ -69,9 +66,9 @@ export const signOut = async () => {
 
     if (error) throw error;
   } catch (err) {
-    const { code } = err
-
-    ValidationError.throwValidationError(code)
+    if(isAuthError(err)){
+      throw new ValidationError(err.message)
+    }
 
     throw new DatabaseError('Something unexpected happened... Try again later')
   }

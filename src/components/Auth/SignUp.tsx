@@ -30,6 +30,8 @@ export const SignUp = () => {
       await signUp(email, password, confirmation)
     }
     catch (err) {
+      setIsTabOpen(true)
+
       if (err instanceof ValidationError) {
         return setError(err.message)
       }
@@ -41,8 +43,6 @@ export const SignUp = () => {
         })
       }
     }
-
-    setIsTabOpen(true)
   }
 
   const navigateToSignIn = () => {

@@ -18,6 +18,7 @@ export const signUp = async (email: string, password: string, confirmation: stri
   try {
     const { error } = await supabase.auth.signUp({ email, password })
 
+console.log(email)
     if (error) throw error;
 
     const request = await supabase

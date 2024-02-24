@@ -61,10 +61,11 @@ export const getInventoryItems = async (): Promise<IShopItems> => {
 export const buyItem = async (name: string): Promise<void> => {
   try {
     const { error } = await supabase
-      .rpc('buy_item', { name });
+      .rpc('asd');
 
     if (error) throw error;
   } catch (e) {
+    console.log(e)
     if(e.message == 'Not enough coins'){
       throw new ShopError('Not enough coins')
     }

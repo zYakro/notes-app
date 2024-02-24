@@ -4,6 +4,7 @@ import { AnimatedPanel } from '../AnimatedPanel';
 import { BasicPanel } from '../BasicPanel';
 import { DraggablePanelContainer } from './styled';
 import { DraggableView } from '../../Animations/DraggableView'
+import { SimplePanel } from '../SimplePanel';
 
 interface IDraggablePanel {
   title: string
@@ -20,9 +21,9 @@ export const DraggablePanel = ({ children, title, delay = 0, isTabOpen, style, x
     <DraggableView x={x} y={y}>
       <DraggablePanelContainer style={style}>
         <AnimatedPanel isTabOpen={isTabOpen} delay={delay}>
-          <BasicPanel title={title}>
+          <SimplePanel title={title}>
             {children}
-          </BasicPanel>
+          </SimplePanel>
         </AnimatedPanel>
       </DraggablePanelContainer>
     </DraggableView>

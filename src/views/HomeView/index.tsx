@@ -1,6 +1,7 @@
 import { Text } from 'react-native';
 import { Column, Container, HomeDraggablePanel } from './styled';
 import { useIsFocused } from '@react-navigation/native'
+import { UserInfoPanel } from '@/components/HomePanels/UserInfoPanel';
 
 export const HomeView = () => {
   const isFocused = useIsFocused()
@@ -8,14 +9,14 @@ export const HomeView = () => {
   return (
     <Container>
       <Column>
-        <HomeDraggablePanel isTabOpen={isFocused} title="▣ Asd"><Text>asdasd</Text></HomeDraggablePanel>
-        <HomeDraggablePanel isTabOpen={isFocused} title="▣ Asd"><Text>asdasd</Text></HomeDraggablePanel>
-        <HomeDraggablePanel isTabOpen={isFocused} title="▣ Asd"><Text>asdasd</Text></HomeDraggablePanel>
+        <UserInfoPanel />
+        <></>
+        <></>
       </Column>
       <Column>
-        <HomeDraggablePanel isTabOpen={isFocused} title="▣ Asd"><Text>asdasd</Text></HomeDraggablePanel>
-        <HomeDraggablePanel isTabOpen={isFocused} title="▣ Asd"><Text>asdasd</Text></HomeDraggablePanel>
-        <HomeDraggablePanel isTabOpen={isFocused} title="▣ Asd"><Text>asdasd</Text></HomeDraggablePanel>
+        <></>
+        <></>
+        <></>
       </Column>
     </Container>
   )
